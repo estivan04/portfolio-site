@@ -13,7 +13,8 @@ const initMobileMenu = () => {
 
     if (!menuToggle || !mobileMenu) return;
 
-    menuToggle.addEventListener('click', () => {
+    // Handler function for menu toggle
+    const toggleMenu = () => {
         const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
 
         // Toggle menu visibility
@@ -27,7 +28,11 @@ const initMobileMenu = () => {
         if (icon) {
             icon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(90deg)';
         }
-    });
+    };
+
+    // Add both click and touchstart for iOS compatibility
+    menuToggle.addEventListener('click', toggleMenu);
+    menuToggle.addEventListener('touchstart', toggleMenu);
 
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
