@@ -1,0 +1,17 @@
+# Cloudflare Pages / Netlify Redirects Configuration
+# https://developers.cloudflare.com/pages/platform/redirects/
+
+# Redirect www to non-www
+https://www.estivanayramia.com/*  https://estivanayramia.com/:splat  301!
+
+# Redirect old paths (if migrating from old site)
+# /old-path  /new-path  301
+
+# Language detection (optional - serves default English if no match)
+# /*  /index.html  200
+
+# 404 Handling
+/*  /404.html  404
+
+# SPA-style routing for future expansion
+# /app/*  /app/index.html  200

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="5-minute deep dive into systems built, challenges faced, and where this is all heading.">
+    <title>Deep Dive | Portfolio</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        beige: '#e1d4c2',
+                        chocolate: '#362017',
+                        indigodeep: '#212842',
+                        ink: '#0a0a0a'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Helvetica', 'Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Theme CSS -->
+    <link rel="stylesheet" href="/assets/css/theme.css">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MCN4RXCY6Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-MCN4RXCY6Q');
+    </script>
+    
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "uawk2g8xee");
+    </script>
+</head>
+<body class="bg-beige text-chocolate font-sans antialiased">
+    
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-indigodeep focus:text-white focus:rounded">Skip to main content</a>
+    
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-beige/95 backdrop-blur-sm border-b border-chocolate/10">
+        <nav class="max-w-7xl mx-auto px-6 lg:px-12 py-6 flex items-center justify-between">
+            <a href="/index.html" class="text-xl font-semibold text-indigodeep hover:text-chocolate transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">Portfolio</a>
+            
+            <!-- Main Navigation -->
+            <ul class="hidden md:flex items-center space-x-8">
+                <li><a href="/overview.html" class="text-sm text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">Overview</a></li>
+                <li><a href="/deep-dive.html" class="text-sm text-indigodeep font-medium underline focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">Deep Dive</a></li>
+                <li><a href="/about.html" class="text-sm text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">About</a></li>
+                <li><a href="/projects.html" class="text-sm text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">Projects</a></li>
+                <li><a href="/contact.html" class="text-sm font-medium text-white bg-indigodeep px-5 py-2 rounded-full hover:bg-chocolate transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige">Contact</a></li>
+            </ul>
+            
+            <!-- Language Switcher -->
+            <div class="flex items-center space-x-3">
+                <a href="/deep-dive.html" class="text-xs font-semibold text-indigodeep underline focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">EN</a>
+                <a href="/es/index.html" class="text-xs text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">ES</a>
+                <a href="/ar/index.html" class="text-xs text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">AR</a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-toggle" class="md:hidden text-chocolate focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded p-2" aria-label="Toggle mobile menu" aria-expanded="false">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-chocolate/10 bg-beige">
+            <ul class="px-6 py-4 space-y-3">
+                <li><a href="/overview.html" class="block text-sm text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded py-2">Overview</a></li>
+                <li><a href="/deep-dive.html" class="block text-sm text-indigodeep font-medium py-2">Deep Dive</a></li>
+                <li><a href="/about.html" class="block text-sm text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded py-2">About</a></li>
+                <li><a href="/projects.html" class="block text-sm text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded py-2">Projects</a></li>
+                <li><a href="/contact.html" class="block text-sm font-medium text-white bg-indigodeep px-5 py-2 rounded-full hover:bg-chocolate transition-colors text-center focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main id="main-content" class="pt-24">
+        
+        <!-- Hero Section -->
+        <section class="max-w-4xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
+            <div class="space-y-6">
+                <div class="inline-block px-4 py-2 bg-indigodeep/10 rounded-full">
+                    <span class="text-xs font-semibold text-indigodeep uppercase tracking-wider">5-Minute Deep Dive</span>
+                </div>
+                <h1 class="text-4xl lg:text-6xl font-bold text-indigodeep leading-tight tracking-tight opacity-0 translate-y-8" data-gsap="fade-up">
+                    Systems, timeline, and what's next
+                </h1>
+                <p class="text-lg text-chocolate leading-relaxed max-w-2xl opacity-0 translate-y-8" data-gsap="fade-up" data-gsap-delay="0.2">
+                    The full story—from Iraq to San Diego, through leadership challenges, to the systems built that make complex operations run clean.
+                </p>
+            </div>
+        </section>
+        
+        <!-- Systems Built Section -->
+        <section class="max-w-5xl mx-auto px-6 lg:px-12 py-16">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-indigodeep mb-4">Three systems that stuck</h2>
+                <p class="text-base text-chocolate leading-relaxed">These aren't theoretical frameworks—they're practical tools built to solve real operational problems.</p>
+            </div>
+            
+            <div class="space-y-16">
+                
+                <!-- System 1: Logistics System -->
+                <article class="opacity-0" data-gsap="fade-up">
+                    <div class="bg-white/50 backdrop-blur-sm border border-chocolate/10 rounded-2xl p-8">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <span class="text-sm font-semibold text-indigodeep bg-indigodeep/10 px-3 py-1 rounded-full">System 01</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-indigodeep mb-4">Logistics System</h3>
+                        <p class="text-base text-chocolate leading-relaxed mb-6">
+                            Built to coordinate multi-location shifts with minimal friction. The problem: People showing up late, resources misallocated, communication breakdowns causing cascading delays.
+                        </p>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="text-sm font-semibold text-indigodeep mb-2 uppercase tracking-wider">The Challenge</h4>
+                                <p class="text-sm text-chocolate leading-relaxed">
+                                    Managing schedules across time zones, coordinating resources with competing priorities, and ensuring everyone had what they needed before shifts started.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold text-indigodeep mb-2 uppercase tracking-wider">The Solution</h4>
+                                <p class="text-sm text-chocolate leading-relaxed mb-3">
+                                    Created a centralized scheduling tool with automated reminders, backup assignment protocols, and real-time status updates. Added pre-shift checklists to catch issues early.
+                                </p>
+                                <ul class="space-y-2 text-sm text-chocolate">
+                                    <li class="flex items-start">
+                                        <span class="mr-2">→</span>
+                                        <span>Automated SMS reminders 24 hours and 2 hours before shifts</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">→</span>
+                                        <span>Backup assignment tree—if primary is unavailable, system auto-escalates</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">→</span>
+                                        <span>Pre-shift checklist pushed to all participants 30 minutes before start</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold text-indigodeep mb-2 uppercase tracking-wider">The Result</h4>
+                                <p class="text-sm text-chocolate leading-relaxed">
+                                    On-time starts improved significantly, resource conflicts dropped, and the team started trusting the process enough to build other workflows around it.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- System 2: Conflict Playbook -->
+                <article class="opacity-0" data-gsap="fade-up" data-gsap-delay="0.1">
+                    <div class="bg-white/50 backdrop-blur-sm border border-chocolate/10 rounded-2xl p-8">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <span class="text-sm font-semibold text-indigodeep bg-indigodeep/10 px-3 py-1 rounded-full">System 02</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-indigodeep mb-4">Conflict Playbook</h3>
+                        <p class="text-base text-chocolate leading-relaxed mb-6">
+                            De-escalation scripts and response frameworks for high-pressure interpersonal situations. The problem: Emotional reactions, inconsistent handling, conflicts that spiraled because no one knew the right move.
+                        </p>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="text-sm font-semibold text-indigodeep mb-2 uppercase tracking-wider">The Challenge</h4>
+                                <p class="text-sm text-chocolate leading-relaxed">
+                                    People under stress don't make rational decisions. Need a framework that's simple enough to remember in the moment but comprehensive enough to cover real scenarios.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold text-indigodeep mb-2 uppercase tracking-wider">The Solution</h4>
+                                <p class="text-sm text-chocolate leading-relaxed mb-3">
+                                    Developed a tiered response playbook with scripted opening lines, active listening prompts, and escalation protocols. Trained team members on role-playing scenarios.
+                                </p>
+                                <ul class="space-y-2 text-sm text-chocolate">
+                                    <li class="flex items-start">
+                                        <span class="mr-2">→</span>
+                                        <span>Tier 1: Acknowledge, clarify, offer solution (handles 70% of issues)</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">→</span>
+                                        <span>Tier 2: Separate parties, gather facts, mediate with neutral language</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">→</span>
+                                        <span>Tier 3: Escalate to supervisor with documented timeline and statements</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold text-indigodeep mb-2 uppercase tracking-wider">The Result</h4>
+                                <p class="text-sm text-chocolate leading-relaxed">
+                                    Faster resolutions, fewer escalations, and team members felt more confident handling difficult conversations without panicking or improvising.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- System 3: Discipline Routine -->
+                <article class="opacity-0" data-gsap="fade-up" data-gsap-delay="0.2">
+                    <div class="bg-white/50 backdrop-blur-sm border border-chocolate/10 rounded-2xl p-8">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <span class="text-sm font-semibold text-indigodeep bg-indigodeep/10 px-3 py-1 rounded-full">System 03</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-indigodeep mb-4">Discipline Routine</h3>
+                        <p class="text-base text-chocolate leading-relaxed mb-6">
+                            Personal productivity system built to manage competing priorities without burning out. The problem: Too many tasks, no clear prioritization, constant context-switching killing focus.
+                        </p>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="text-sm font-semibold text-indigodeep mb-2 uppercase tracking-wider">The Challenge</h4>
+                                <p class="text-sm text-chocolate leading-relaxed">
+                                    Balancing school, work, leadership responsibilities, and personal projects without dropping critical tasks or sacrificing quality.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold text-indigodeep mb-2 uppercase tracking-wider">The Solution</h4>
+                                <p class="text-sm text-chocolate leading-relaxed mb-3">
+                                    Time-blocking system with daily review loops, weekly planning sessions, and ruthless task prioritization. Built in buffer time for unexpected issues.
+                                </p>
+                                <ul class="space-y-2 text-sm text-chocolate">
+                                    <li class="flex items-start">
+                                        <span class="mr-2">→</span>
+                                        <span>Morning block: High-focus work (7-10 AM, no meetings, no interruptions)</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">→</span>
+                                        <span>Midday block: Reactive work (email, coordination, quick decisions)</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">→</span>
+                                        <span>Evening review: 15-minute audit of day's progress, adjust tomorrow's plan</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">→</span>
+                                        <span>Weekly reset: Sunday planning session to prioritize next week's deliverables</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold text-indigodeep mb-2 uppercase tracking-wider">The Result</h4>
+                                <p class="text-sm text-chocolate leading-relaxed">
+                                    Consistent output without burnout. Projects shipped on time, grades stayed strong, and mental clarity improved because the system handled the tracking.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                
+            </div>
+        </section>
+        
+        <div class="border-t border-chocolate/10 my-16"></div>
+        
+        <!-- Timeline Section -->
+        <section class="max-w-5xl mx-auto px-6 lg:px-12 py-16">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-indigodeep mb-4">How we got here</h2>
+                <p class="text-base text-chocolate leading-relaxed">The path from Iraq to San Diego, through leadership challenges, to building systems that last.</p>
+            </div>
+            
+            <div class="space-y-8">
+                
+                <!-- Timeline: Iraq -->
+                <div class="flex items-start space-x-6 opacity-0" data-gsap="fade-up">
+                    <div class="flex-shrink-0 w-12 h-12 bg-indigodeep text-white rounded-full flex items-center justify-center text-sm font-semibold">01</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-indigodeep mb-2">Iraq</h3>
+                        <p class="text-sm text-chocolate leading-relaxed">
+                            Born and raised in Baghdad. Learned early that chaos is the default state—systems and discipline are what create order. Cultural fluency in Arabic, understanding of high-stakes environments.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Timeline: San Diego -->
+                <div class="flex items-start space-x-6 opacity-0" data-gsap="fade-up" data-gsap-delay="0.1">
+                    <div class="flex-shrink-0 w-12 h-12 bg-indigodeep text-white rounded-full flex items-center justify-center text-sm font-semibold">02</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-indigodeep mb-2">San Diego</h3>
+                        <p class="text-sm text-chocolate leading-relaxed">
+                            Moved to the U.S. New systems, new language, new expectations. Military community exposure taught structure, accountability, and the value of clear communication under pressure.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Timeline: First Leadership -->
+                <div class="flex items-start space-x-6 opacity-0" data-gsap="fade-up" data-gsap-delay="0.2">
+                    <div class="flex-shrink-0 w-12 h-12 bg-indigodeep text-white rounded-full flex items-center justify-center text-sm font-semibold">03</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-indigodeep mb-2">First Leadership Role</h3>
+                        <p class="text-sm text-chocolate leading-relaxed">
+                            Coordinating teams across shifts, managing conflicts, ensuring operations ran on time. Realized that good intentions don't scale—systems do. Started documenting processes and building repeatable frameworks.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Timeline: Key Pain Point -->
+                <div class="flex items-start space-x-6 opacity-0" data-gsap="fade-up" data-gsap-delay="0.3">
+                    <div class="flex-shrink-0 w-12 h-12 bg-indigodeep text-white rounded-full flex items-center justify-center text-sm font-semibold">04</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-indigodeep mb-2">Key Pain Point</h3>
+                        <p class="text-sm text-chocolate leading-relaxed">
+                            Watched too many projects stall because no one owned the follow-through. Plans looked great on paper, execution was messy. Decided to focus on closing the gap between strategy and delivery.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Timeline: System Built -->
+                <div class="flex items-start space-x-6 opacity-0" data-gsap="fade-up" data-gsap-delay="0.4">
+                    <div class="flex-shrink-0 w-12 h-12 bg-indigodeep text-white rounded-full flex items-center justify-center text-sm font-semibold">05</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-indigodeep mb-2">Systems Built</h3>
+                        <p class="text-sm text-chocolate leading-relaxed">
+                            Developed logistics coordination tools, conflict resolution playbooks, and personal discipline routines. Tested in real environments, refined based on feedback, documented for repeatability.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Timeline: Current Target Role -->
+                <div class="flex items-start space-x-6 opacity-0" data-gsap="fade-up" data-gsap-delay="0.5">
+                    <div class="flex-shrink-0 w-12 h-12 bg-indigodeep text-white rounded-full flex items-center justify-center text-sm font-semibold">06</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-indigodeep mb-2">Current Target Role</h3>
+                        <p class="text-sm text-chocolate leading-relaxed">
+                            Operations management in high-complexity environments. Places where coordination matters, people are the constraint, and clean execution is the differentiator. Interested in roles where systems thinking scales impact.
+                        </p>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="max-w-4xl mx-auto px-6 lg:px-12 py-20">
+            <div class="bg-indigodeep rounded-3xl p-12 text-center space-y-6">
+                <h2 class="text-3xl font-bold text-white">Let's talk about what's next</h2>
+                <p class="text-base text-beige max-w-xl mx-auto leading-relaxed">Whether it's a role, a project, or just comparing notes on systems—reach out.</p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="/contact.html" class="inline-block text-base font-medium text-indigodeep bg-white px-8 py-4 rounded-full hover:bg-beige transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-4 focus:ring-offset-indigodeep">
+                        Contact
+                    </a>
+                    <a href="/about.html" class="inline-block text-base font-medium text-white border-2 border-white px-8 py-4 rounded-full hover:bg-white hover:text-indigodeep transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-4 focus:ring-offset-indigodeep">
+                        About
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-indigodeep text-beige py-12">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid md:grid-cols-3 gap-12 mb-12">
+                <!-- Column 1: Brand -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-semibold text-white">Portfolio</h3>
+                    <p class="text-sm text-beige/80 leading-relaxed">Systems, people, clean execution. Making complex operations run smoothly.</p>
+                </div>
+                
+                <!-- Column 2: Quick Links -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-semibold text-white uppercase tracking-wider">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/overview.html" class="text-sm text-beige/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">Overview</a></li>
+                        <li><a href="/deep-dive.html" class="text-sm text-white font-medium focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">Deep Dive</a></li>
+                        <li><a href="/projects.html" class="text-sm text-beige/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">Projects</a></li>
+                        <li><a href="/about.html" class="text-sm text-beige/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">About</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Column 3: Connect -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-semibold text-white uppercase tracking-wider">Connect</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/contact.html" class="text-sm text-beige/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">Contact</a></li>
+                        <li><a href="/privacy.html" class="text-sm text-beige/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-beige/20 pt-8 text-center">
+                <p class="text-xs text-beige/60">&copy; 2025 Portfolio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Chatbase Embed -->
+    <script>
+        window.embeddedChatbotConfig = {
+            chatbotId: "fe5slOh95Jd3FwQHUxFDP",
+            domain: "www.chatbase.co"
+        }
+    </script>
+    <script src="https://www.chatbase.co/embed.min.js" chatbotId="fe5slOh95Jd3FwQHUxFDP" domain="www.chatbase.co" defer></script>
+    
+    <!-- GSAP + ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    
+    <!-- Site JavaScript -->
+    <script src="/assets/js/site.js" defer></script>
+    
+</body>
+</html>

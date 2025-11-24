@@ -1,0 +1,283 @@
+/**
+ * Portfolio Theme CSS
+ * Custom utilities and overrides for Tailwind
+ */
+
+/* ==========================================================================
+   Base Styles & Resets
+   ========================================================================== */
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+}
+
+/* ==========================================================================
+   RTL Support for Arabic
+   ========================================================================== */
+
+[dir="rtl"] {
+    text-align: right;
+}
+
+[dir="rtl"] .space-x-reverse > * + * {
+    margin-right: var(--tw-space-x-reverse);
+    margin-left: 0;
+}
+
+/* ==========================================================================
+   Accessibility Utilities
+   ========================================================================== */
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.sr-only:not(.focus\:not-sr-only:focus) {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border-width: 0 !important;
+}
+
+/* ==========================================================================
+   Custom Scrollbar
+   ========================================================================== */
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #e1d4c2;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #362017;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #212842;
+}
+
+/* ==========================================================================
+   Focus Visible (Modern Browsers)
+   ========================================================================== */
+
+*:focus-visible {
+    outline: 2px solid #212842;
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   GSAP Animation Initial States
+   ========================================================================== */
+
+[data-gsap="fade-up"] {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* ==========================================================================
+   Backdrop Blur Fallback
+   ========================================================================== */
+
+@supports not (backdrop-filter: blur(10px)) {
+    .backdrop-blur-sm {
+        background-color: rgba(225, 212, 194, 0.95);
+    }
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    header,
+    footer,
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+}
+
+/* ==========================================================================
+   Mobile Menu Animation
+   ========================================================================== */
+
+#mobile-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+}
+
+#mobile-menu:not(.hidden) {
+    max-height: 500px;
+}
+
+/* ==========================================================================
+   Custom Gradient Backgrounds
+   ========================================================================== */
+
+.gradient-hero {
+    background: linear-gradient(135deg, #212842 0%, #362017 100%);
+}
+
+/* ==========================================================================
+   Link Underline Animation
+   ========================================================================== */
+
+.link-underline {
+    position: relative;
+    text-decoration: none;
+}
+
+.link-underline::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+}
+
+.link-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* ==========================================================================
+   Chatbase Widget Customization
+   ========================================================================== */
+
+/* Override Chatbase default styles if needed */
+#chatbase-bubble-button {
+    bottom: 24px !important;
+    right: 24px !important;
+}
+
+[dir="rtl"] #chatbase-bubble-button {
+    right: auto !important;
+    left: 24px !important;
+}
+
+/* ==========================================================================
+   Form Input Enhancements
+   ========================================================================== */
+
+input[type="text"],
+input[type="email"],
+textarea,
+select {
+    transition: all 0.2s ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus,
+select:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(33, 40, 66, 0.1);
+}
+
+/* ==========================================================================
+   Loading States
+   ========================================================================== */
+
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Card Hover Effects
+   ========================================================================== */
+
+.card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(33, 40, 66, 0.15);
+}
+
+/* ==========================================================================
+   Responsive Utilities
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+        line-height: 1.2;
+    }
+    
+    h2 {
+        font-size: 2rem;
+        line-height: 1.3;
+    }
+}
+
+/* ==========================================================================
+   High Contrast Mode Support
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+    * {
+        border-width: 2px !important;
+    }
+}
+
+/* ==========================================================================
+   Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ==========================================================================
+   Dark Mode Preparation (Future Use)
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    /* Dark mode styles can be added here in the future */
+}

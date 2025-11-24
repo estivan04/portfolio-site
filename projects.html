@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Selected projects showcasing systems thinking, operational coordination, and leadership in action.">
+    <title>Projects | Portfolio</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        beige: '#e1d4c2',
+                        chocolate: '#362017',
+                        indigodeep: '#212842',
+                        ink: '#0a0a0a'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Helvetica', 'Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Theme CSS -->
+    <link rel="stylesheet" href="/assets/css/theme.css">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MCN4RXCY6Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-MCN4RXCY6Q');
+    </script>
+    
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "uawk2g8xee");
+    </script>
+</head>
+<body class="bg-beige text-chocolate font-sans antialiased">
+    
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-indigodeep focus:text-white focus:rounded">Skip to main content</a>
+    
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-beige/95 backdrop-blur-sm border-b border-chocolate/10">
+        <nav class="max-w-7xl mx-auto px-6 lg:px-12 py-6 flex items-center justify-between">
+            <a href="/index.html" class="text-xl font-semibold text-indigodeep hover:text-chocolate transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">Portfolio</a>
+            
+            <!-- Main Navigation -->
+            <ul class="hidden md:flex items-center space-x-8">
+                <li><a href="/overview.html" class="text-sm text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">Overview</a></li>
+                <li><a href="/deep-dive.html" class="text-sm text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">Deep Dive</a></li>
+                <li><a href="/about.html" class="text-sm text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">About</a></li>
+                <li><a href="/projects.html" class="text-sm text-indigodeep font-medium underline focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">Projects</a></li>
+                <li><a href="/contact.html" class="text-sm font-medium text-white bg-indigodeep px-5 py-2 rounded-full hover:bg-chocolate transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige">Contact</a></li>
+            </ul>
+            
+            <!-- Language Switcher -->
+            <div class="flex items-center space-x-3">
+                <a href="/projects.html" class="text-xs font-semibold text-indigodeep underline focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">EN</a>
+                <a href="/es/index.html" class="text-xs text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">ES</a>
+                <a href="/ar/index.html" class="text-xs text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded">AR</a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-toggle" class="md:hidden text-chocolate focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded p-2" aria-label="Toggle mobile menu" aria-expanded="false">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-chocolate/10 bg-beige">
+            <ul class="px-6 py-4 space-y-3">
+                <li><a href="/overview.html" class="block text-sm text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded py-2">Overview</a></li>
+                <li><a href="/deep-dive.html" class="block text-sm text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded py-2">Deep Dive</a></li>
+                <li><a href="/about.html" class="block text-sm text-chocolate hover:text-indigodeep transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded py-2">About</a></li>
+                <li><a href="/projects.html" class="block text-sm text-indigodeep font-medium py-2">Projects</a></li>
+                <li><a href="/contact.html" class="block text-sm font-medium text-white bg-indigodeep px-5 py-2 rounded-full hover:bg-chocolate transition-colors text-center focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main id="main-content" class="pt-24">
+        
+        <!-- Hero Section -->
+        <section class="max-w-5xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
+            <div class="space-y-6">
+                <h1 class="text-4xl lg:text-6xl font-bold text-indigodeep leading-tight tracking-tight opacity-0 translate-y-8" data-gsap="fade-up">
+                    Selected Work
+                </h1>
+                <p class="text-lg text-chocolate leading-relaxed max-w-2xl opacity-0 translate-y-8" data-gsap="fade-up" data-gsap-delay="0.2">
+                    Systems built, teams coordinated, challenges solved. Each project represents a commitment to reliability, execution, and measurable outcomes.
+                </p>
+            </div>
+        </section>
+        
+        <!-- Projects Grid -->
+        <section class="max-w-6xl mx-auto px-6 lg:px-12 py-16">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Project Card 1 -->
+                <article class="bg-white/50 backdrop-blur-sm border border-chocolate/10 rounded-2xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-2 opacity-0" data-gsap="fade-up" data-gsap-delay="0.1">
+                    <div class="aspect-video bg-gradient-to-br from-indigodeep to-chocolate flex items-center justify-center">
+                        <svg class="w-16 h-16 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs bg-indigodeep/10 text-indigodeep px-2 py-1 rounded-full">Operations</span>
+                            <span class="text-xs text-ink/60">2024</span>
+                        </div>
+                        <h2 class="text-xl font-semibold text-indigodeep">Logistics Coordination System</h2>
+                        <p class="text-sm text-chocolate leading-relaxed">Built centralized scheduling tool with automated reminders and backup protocols. Improved on-time starts and reduced resource conflicts across multi-location operations.</p>
+                        <div class="pt-2">
+                            <a href="/deep-dive.html#logistics-system" class="text-sm font-medium text-indigodeep hover:text-chocolate transition-colors underline focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-white rounded">
+                                View Details →
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Project Card 2 -->
+                <article class="bg-white/50 backdrop-blur-sm border border-chocolate/10 rounded-2xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-2 opacity-0" data-gsap="fade-up" data-gsap-delay="0.2">
+                    <div class="aspect-video bg-gradient-to-br from-chocolate to-indigodeep flex items-center justify-center">
+                        <svg class="w-16 h-16 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs bg-indigodeep/10 text-indigodeep px-2 py-1 rounded-full">Leadership</span>
+                            <span class="text-xs text-ink/60">2024</span>
+                        </div>
+                        <h2 class="text-xl font-semibold text-indigodeep">Conflict Resolution Playbook</h2>
+                        <p class="text-sm text-chocolate leading-relaxed">Developed tiered de-escalation framework with scripted responses. Trained team members on high-pressure conflict management, reducing escalations and improving resolution speed.</p>
+                        <div class="pt-2">
+                            <a href="/deep-dive.html#conflict-playbook" class="text-sm font-medium text-indigodeep hover:text-chocolate transition-colors underline focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-white rounded">
+                                View Details →
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Project Card 3 -->
+                <article class="bg-white/50 backdrop-blur-sm border border-chocolate/10 rounded-2xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-2 opacity-0" data-gsap="fade-up" data-gsap-delay="0.3">
+                    <div class="aspect-video bg-gradient-to-br from-indigodeep/80 to-chocolate/80 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs bg-indigodeep/10 text-indigodeep px-2 py-1 rounded-full">Productivity</span>
+                            <span class="text-xs text-ink/60">2023-Present</span>
+                        </div>
+                        <h2 class="text-xl font-semibold text-indigodeep">Personal Discipline Routine</h2>
+                        <p class="text-sm text-chocolate leading-relaxed">Time-blocking system with daily review loops and weekly planning sessions. Balanced school, work, and leadership responsibilities without sacrificing quality or burning out.</p>
+                        <div class="pt-2">
+                            <a href="/deep-dive.html#discipline-routine" class="text-sm font-medium text-indigodeep hover:text-chocolate transition-colors underline focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-white rounded">
+                                View Details →
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Project Card 4 -->
+                <article class="bg-white/50 backdrop-blur-sm border border-chocolate/10 rounded-2xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-2 opacity-0" data-gsap="fade-up" data-gsap-delay="0.4">
+                    <div class="aspect-video bg-gradient-to-br from-chocolate/70 to-indigodeep/70 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                        </svg>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs bg-indigodeep/10 text-indigodeep px-2 py-1 rounded-full">Communication</span>
+                            <span class="text-xs text-ink/60">Ongoing</span>
+                        </div>
+                        <h2 class="text-xl font-semibold text-indigodeep">Multilingual Bridge Building</h2>
+                        <p class="text-sm text-chocolate leading-relaxed">Facilitated cross-cultural communication in English, Spanish, and Arabic. Prevented miscommunication in high-stakes environments through direct, culturally-aware translation.</p>
+                        <div class="pt-2">
+                            <span class="text-sm text-ink/60">Ongoing initiative</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Project Card 5 -->
+                <article class="bg-white/50 backdrop-blur-sm border border-chocolate/10 rounded-2xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-2 opacity-0" data-gsap="fade-up" data-gsap-delay="0.5">
+                    <div class="aspect-video bg-gradient-to-br from-indigodeep/60 to-chocolate/90 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs bg-indigodeep/10 text-indigodeep px-2 py-1 rounded-full">Documentation</span>
+                            <span class="text-xs text-ink/60">2024</span>
+                        </div>
+                        <h2 class="text-xl font-semibold text-indigodeep">Process Documentation Library</h2>
+                        <p class="text-sm text-chocolate leading-relaxed">Created standard operating procedures for recurring tasks. Reduced onboarding time, ensured consistency, and made knowledge transferable across team changes.</p>
+                        <div class="pt-2">
+                            <span class="text-sm text-ink/60">Internal resource</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Project Card 6 -->
+                <article class="bg-white/50 backdrop-blur-sm border border-chocolate/10 rounded-2xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-2 opacity-0" data-gsap="fade-up" data-gsap-delay="0.6">
+                    <div class="aspect-video bg-gradient-to-br from-chocolate/80 to-indigodeep/60 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                        </svg>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs bg-indigodeep/10 text-indigodeep px-2 py-1 rounded-full">Digital</span>
+                            <span class="text-xs text-ink/60">2025</span>
+                        </div>
+                        <h2 class="text-xl font-semibold text-indigodeep">Portfolio Website System</h2>
+                        <p class="text-sm text-chocolate leading-relaxed">Built static multilingual portfolio with time-budget navigation, AI chatbot integration, and analytics tracking. Demonstrates technical execution and user-centered design thinking.</p>
+                        <div class="pt-2">
+                            <span class="text-sm text-ink/60">You're looking at it</span>
+                        </div>
+                    </div>
+                </article>
+                
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="max-w-4xl mx-auto px-6 lg:px-12 py-20">
+            <div class="bg-indigodeep rounded-3xl p-12 text-center space-y-6">
+                <h2 class="text-3xl font-bold text-white">Want to build something together?</h2>
+                <p class="text-base text-beige max-w-xl mx-auto leading-relaxed">Whether it's a system, a team coordination challenge, or an operational problem—let's talk.</p>
+                <a href="/contact.html" class="inline-block text-base font-medium text-indigodeep bg-white px-8 py-4 rounded-full hover:bg-beige transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-4 focus:ring-offset-indigodeep">
+                    Get in Touch
+                </a>
+            </div>
+        </section>
+        
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-indigodeep text-beige py-12">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid md:grid-cols-3 gap-12 mb-12">
+                <!-- Column 1: Brand -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-semibold text-white">Portfolio</h3>
+                    <p class="text-sm text-beige/80 leading-relaxed">Systems, people, clean execution. Making complex operations run smoothly.</p>
+                </div>
+                
+                <!-- Column 2: Quick Links -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-semibold text-white uppercase tracking-wider">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/overview.html" class="text-sm text-beige/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">Overview</a></li>
+                        <li><a href="/deep-dive.html" class="text-sm text-beige/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">Deep Dive</a></li>
+                        <li><a href="/projects.html" class="text-sm text-white font-medium focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">Projects</a></li>
+                        <li><a href="/about.html" class="text-sm text-beige/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">About</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Column 3: Connect -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-semibold text-white uppercase tracking-wider">Connect</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/contact.html" class="text-sm text-beige/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">Contact</a></li>
+                        <li><a href="/privacy.html" class="text-sm text-beige/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-beige/20 pt-8 text-center">
+                <p class="text-xs text-beige/60">&copy; 2025 Portfolio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Chatbase Embed -->
+    <script>
+        window.embeddedChatbotConfig = {
+            chatbotId: "fe5slOh95Jd3FwQHUxFDP",
+            domain: "www.chatbase.co"
+        }
+    </script>
+    <script src="https://www.chatbase.co/embed.min.js" chatbotId="fe5slOh95Jd3FwQHUxFDP" domain="www.chatbase.co" defer></script>
+    
+    <!-- GSAP + ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    
+    <!-- Site JavaScript -->
+    <script src="/assets/js/site.js" defer></script>
+    
+</body>
+</html>
