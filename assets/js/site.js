@@ -194,19 +194,32 @@ const initFormValidation = () => {
 
     const isSafeUrl = (val) => {
         if (!val) return true;
-        const trimmed = val.trim();
-        if (trimmed.length > 2048) return false;
+        let trimmed = val.trim();
+
+        // Automatically prepend https:// if missing
+        if (!/^https?:\/\//i.test(trimmed)) {
+            trimmed = `https://${trimmed}`;
+        }
+
         let u;
         try {
             u = new URL(trimmed);
         } catch (_) {
             return false;
         }
-        if (!['https:', 'http:'].includes(u.protocol)) return false;
         const banned = ['javascript:', 'data:', 'file:', 'blob:', 'chrome:', 'chrome-extension:'];
         if (banned.includes(u.protocol)) return false;
         return true;
     };
+
+    // Update linkInput value on blur
+    if (linkInput) {
+        linkInput.addEventListener('blur', () => {
+            if (linkInput.value && !/^https?:\/\//i.test(linkInput.value)) {
+                linkInput.value = `https://${linkInput.value.trim()}`;
+            }
+        });
+    }
 
     // Add blur event listeners for real-time validation
     inputs.forEach(input => {
@@ -1253,13 +1266,6 @@ function initDraggableResizableChat() {
         document.body.style.cursor = '';
         localStorage.setItem(STORAGE_KEYS.width, parseInt(panel.style.width,10));
         localStorage.setItem(STORAGE_KEYS.height, parseInt(panel.style.height,10));
-        if (activeHandle) {
-            activeHandle.releasePointerCapture(e.pointerId);
-            activeHandle.removeEventListener('pointermove', onResizeMove);
-            activeHandle.removeEventListener('pointerup', endResize);
-            activeHandle.removeEventListener('pointercancel', endResize);
-            activeHandle = null;
-        }
     };
     const startResize = (e, c, handle) => {
         e.preventDefault();
