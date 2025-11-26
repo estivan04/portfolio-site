@@ -50,6 +50,14 @@ header {
     color: var(--color-text) !important;
 }
 
+.text-beige {
+    color: #e1d4c2 !important;
+}
+
+.hover\:text-beige:hover {
+    color: #e1d4c2 !important;
+}
+
 .text-indigodeep {
     color: var(--color-primary) !important;
 }
