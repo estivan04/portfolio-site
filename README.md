@@ -7,18 +7,83 @@ Static multilingual portfolio built with HTML, Tailwind CSS, GSAP, and modern we
 - **PWA Support**: Installable app with offline functionality via service worker
 - **Time-Budget Navigation**: 30-second, 1-minute, and 5-minute content paths
 - **Multilingual**: English, Spanish (ES), Arabic (AR) with RTL support
-- **Analytics**: Microsoft Clarity with comprehensive event tracking (20+ events)
-- **AI Integration**: Chatbase chatbot for visitor Q&A
+- **Analytics**: Google Analytics 4 + Microsoft Clarity with comprehensive event tracking
+- **AI Chatbot**: Custom Savonie AI chatbot with Smart Signals (chips, actions, project cards)
 - **Performance Monitoring**: Automatic Core Web Vitals tracking (LCP, FID, CLS)
 - **Achievement System**: 8 hidden achievements to boost engagement
 - **Easter Eggs**: Konami code secret (↑↑↓↓←→←→BA)
 - **Accessibility**: WCAG 2.1 AA compliant
 - **Animations**: GSAP-powered scroll animations
 - **Security**: CSP headers, X-Frame-Options, secure cache policies
+- **Dark Mode**: Polished dark theme with optimized chat widget styling
 
 ---
 
-## 🔔 Recent Changes (pre-commit)
+## 🤖 Savonie AI Chatbot
+
+### Smart Signals Integration
+The chatbot now supports advanced interactions via JSON responses from the backend:
+
+**Response Format:**
+```json
+{
+  "reply": "Text response with markdown support",
+  "chips": ["Suggestion 1", "Suggestion 2"],
+  "action": "download_resume" | "email_link",
+  "card": "logistics" | "conflict" | "discipline" | "website"
+}
+```
+
+**Features:**
+- **Typewriter Effect**: Bot messages type out character-by-character (30ms delay)
+- **Dynamic Chips**: Suggestion buttons that auto-populate and send messages
+- **Smart Actions**: 
+  - `download_resume`: Triggers PDF download
+  - `email_link`: Opens mailto link
+- **Project Cards**: Visual cards with images and "View Project" buttons
+- **Language Detection**: Automatically sends page language to backend
+- **Google Analytics**: Tracks chat interactions with `chat_question` events
+- **Session Persistence**: Chat history saved in sessionStorage
+- **Draggable Window**: Repositionable with viewport constraints
+- **Keyboard Shortcuts**: 
+  - `Escape` to close
+  - `Ctrl/Cmd + K` to toggle
+- **Dark Mode Optimized**: Premium gradients, hidden scrollbars, glassmorphism effects
+
+### Project Data
+Available project cards:
+- `logistics`: Logistics System
+- `conflict`: Conflict Playbook
+- `discipline`: Discipline Routine
+- `website`: Portfolio Website
+
+---
+
+## 🔔 Recent Changes (Latest Commit)
+
+### Chatbot Migration: Chatbase → Savonie AI
+- **Complete Replacement**: Removed all Chatbase scripts and code
+- **Custom Implementation**: Built serverless chatbot with Cloudflare Worker backend
+- **Smart Signals**: Added JSON-based response handling with chips, actions, and cards
+- **Enhanced UX**: 
+  - Typewriter effect for bot responses
+  - Auto-scroll to bottom on load and toggle
+  - Mobile menu fix (click-to-toggle instead of hold)
+  - Suggestion chips removed from static HTML (now dynamic)
+  
+### Dark Mode Improvements
+- **Premium Styling**: Gradient backgrounds, glassmorphism, enhanced shadows
+- **Hidden Scrollbars**: Cleaner interface without visible scrollbars
+- **Optimized Colors**: Light text on user messages for better readability
+- **Consistent Theme**: All chat elements styled to match site's dark mode
+
+### Analytics Enhancement
+- **Google Analytics**: Chat question tracking integrated
+- **Microsoft Clarity**: Already configured for session recording
+
+---
+
+## 🔔 Previous Changes
 
 These changes were made to finalize branding and PWA/favicon support before you commit and deploy. Follow the short checklist below before pushing to `main`.
 

@@ -64,9 +64,11 @@ const initMobileMenu = () => {
         }
     };
 
-    // Add both click and touchstart for iOS compatibility
-    menuToggle.addEventListener('click', toggleMenu);
-    menuToggle.addEventListener('touchstart', toggleMenu);
+    // Add click event for menu toggle
+    menuToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleMenu();
+    });
 
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
@@ -334,7 +336,7 @@ const initFormValidation = () => {
                 if (card) {
                     card.innerHTML = `
                         <h2 class="text-2xl font-bold text-indigodeep mb-2">Thanks — message sent!</h2>
-                        <p class="text-sm text-chocolate mb-4">Enjoy a quick game while you’re here.</p>
+                        <p class="text-sm text-chocolate mb-4">Enjoy a quick game while you're here.</p>
                         <div id="mini-game-root" class="w-full bg-white border border-chocolate/10 rounded-xl p-4"></div>
                     `;
                     initMiniGame('mini-game-root');
@@ -619,7 +621,7 @@ const initMiniGame = (rootId) => {
         endMsg.className = 'mt-3 text-sm text-indigodeep mg-end';
         endMsg.innerHTML = `
             <div class="mb-1 font-medium">Game over! Final score: ${state.score}</div>
-            <p class="text-ink/80 mb-2">Hope you enjoyed this little easter egg — I’ll be in touch soon.</p>
+            <p class="text-ink/80 mb-2">Hope you enjoyed this little easter egg — I'll be in touch soon.</p>
             <p class="text-ink/60">Want more surprises? Explore a few corners of the site:</p>
             <div class="mt-2 flex flex-wrap gap-2">
                 <a href="overview.html" class="text-xs px-3 py-1 rounded-full border border-chocolate/20 text-indigodeep hover:bg-beige transition-colors">Overview</a>
@@ -773,304 +775,6 @@ const initLazyLoading = () => {
             img.removeAttribute('data-src');
         });
     }
-};
-
-// ==========================================================================
-// Chatbot Bubble Customization
-// ==========================================================================
-
-const initChatbotBubble = () => {
-    const bubbleId = 'chatbase-bubble-button';
-    const attachLogic = () => {
-        const bubble = document.getElementById(bubbleId) || document.querySelector('#' + bubbleId);
-        if (!bubble) return;
-
-        // Helper: compute perceived brightness of a rgb(a) color
-        const brightness = (rgbString) => {
-            if (!rgbString) return 255;
-            const m = rgbString.match(/rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
-            if (!m) return 255;
-            const r = parseInt(m[1],10), g = parseInt(m[2],10), b = parseInt(m[3],10);
-            // standard luminance approximation
-            return 0.299*r + 0.587*g + 0.114*b;
-        };
-
-        const evaluateBackground = () => {
-            // sample point where bubble sits (slightly inward)
-            const x = window.innerWidth - 40;
-            const y = window.innerHeight - 40;
-            const el = document.elementFromPoint(x, y);
-            if (!el) return;
-            const bg = getComputedStyle(el).backgroundColor;
-            const b = brightness(bg);
-            // toggle invert if background is dark
-            if (b < 100) {
-                bubble.classList.add('chatbot-invert');
-            } else {
-                bubble.classList.remove('chatbot-invert');
-            }
-        };
-
-        // Throttle scroll/resize
-        let ticking = false;
-        const onScroll = () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    evaluateBackground();
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        };
-
-        ['scroll','resize'].forEach(evt => window.addEventListener(evt, onScroll, { passive: true }));
-        evaluateBackground();
-
-        // Observe chatbot widget open/close state
-        const observeChatState = () => {
-            let minOverlay = null;
-            
-            const findChatWidget = () => {
-                // Look for the chatbase window div first, then iframe
-                return document.getElementById('chatbase-bubble-window') ||
-                       document.querySelector('iframe[src*="chatbase"]') || 
-                       document.querySelector('iframe[id*="chatbase"]') ||
-                       document.querySelector('iframe[title*="chatbase"]') ||
-                       document.querySelector('iframe[class*="chatbase"]') ||
-                       Array.from(document.querySelectorAll('iframe')).find(f => {
-                           try { return f.src && f.src.includes('chatbase'); } catch(e) { return false; }
-                       });
-            };
-
-            const alignMinButton = (chatWidget) => {
-                if (!minOverlay || !chatWidget) return;
-                const rect = chatWidget.getBoundingClientRect();
-                // Fine-tuned alignment constants for symmetry with ellipsis button
-                const topOffset = 14; // vertical tweak
-                const ellipsisGap = 14; // space from right edge to ellipsis button
-                const dashWidth = 36; // size of our minimize button
-                const gapBetween = 6; // gap between dash and ellipsis
-                const rightOffset = ellipsisGap + dashWidth + gapBetween;
-                minOverlay.style.top = `${rect.top + topOffset}px`;
-                minOverlay.style.right = `${window.innerWidth - rect.right + rightOffset}px`;
-                minOverlay.style.display = 'block';
-            };
-
-            const checkState = () => {
-                const chatWidget = findChatWidget();
-                let isOpen = false;
-                if (chatWidget) {
-                    const style = getComputedStyle(chatWidget);
-                    const rect = chatWidget.getBoundingClientRect();
-                    isOpen = style.display !== 'none' && style.visibility !== 'hidden' && parseFloat(style.opacity || '1') > 0 && rect.width > 0 && rect.height > 0;
-                }
-                if (isOpen) {
-                    bubble.classList.add('chatbot-open');
-                    alignMinButton(chatWidget);
-                } else {
-                    bubble.classList.remove('chatbot-open');
-                    if (minOverlay) minOverlay.style.display = 'none';
-                }
-                return chatWidget;
-            };
-
-            // Inject minimize button overlay
-            const createMinimizeButton = () => {
-                if (minOverlay) return;
-                
-                minOverlay = document.createElement('button');
-                minOverlay.className = 'chatbase-minimize-overlay';
-                minOverlay.innerHTML = '—';
-                minOverlay.title = 'Minimize chat';
-                minOverlay.style.cssText = `
-                    position: fixed;
-                    background: transparent;
-                    border: none;
-                    font-size: 18px;
-                    font-weight: 500;
-                    line-height: 1;
-                    cursor: pointer;
-                    padding: 0;
-                    margin: 0;
-                    width: 36px;
-                    height: 36px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: rgba(255,255,255,0.85);
-                    z-index: 2147483647;
-                    transition: color 0.15s ease, background 0.15s ease;
-                    pointer-events: auto;
-                    text-align: center;
-                    border-radius: 4px;
-                    backdrop-filter: blur(2px);
-                    -webkit-backdrop-filter: blur(2px);
-                    display: none;
-                `;
-                
-                minOverlay.onmouseover = () => { minOverlay.style.background = 'rgba(255,255,255,0.12)'; };
-                minOverlay.onmouseout = () => { minOverlay.style.background = 'transparent'; };
-                minOverlay.onclick = (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    bubble.click();
-                };
-                
-                document.body.appendChild(minOverlay);
-            };
-
-            // Run checks periodically
-            setInterval(checkState, 250);
-            window.addEventListener('resize', () => { const cw = findChatWidget(); if (cw) alignMinButton(cw); });
-            
-            createMinimizeButton();
-            checkState();
-            
-            // Edge / corner hover & drag resize (no visible handles)
-            const setupCustomResize = () => {
-                const chatWindow = document.getElementById('chatbase-bubble-window');
-                if (!chatWindow || chatWindow.dataset.edgeResizeSetup) return;
-                chatWindow.dataset.edgeResizeSetup = 'true';
-
-                // Load saved size
-                const savedWidth = localStorage.getItem('chatbaseWidth');
-                const savedHeight = localStorage.getItem('chatbaseHeight');
-                if (savedWidth) chatWindow.style.width = savedWidth;
-                if (savedHeight) chatWindow.style.height = savedHeight;
-
-                // Enlarged interactive edge thickness for easier grab
-                const EDGE_THRESHOLD = 28;
-                let isResizing = false;
-                let mode = null; // left,right,top,bottom,top-left,...
-                let startX, startY, startW, startH;
-
-                const getMode = (e) => {
-                    const rect = chatWindow.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const nearLeft = x <= EDGE_THRESHOLD;
-                    const nearRight = x >= rect.width - EDGE_THRESHOLD;
-                    const nearTop = y <= EDGE_THRESHOLD;
-                    const nearBottom = y >= rect.height - EDGE_THRESHOLD;
-                    if (nearLeft && nearTop) return 'top-left';
-                    if (nearRight && nearTop) return 'top-right';
-                    if (nearLeft && nearBottom) return 'bottom-left';
-                    if (nearRight && nearBottom) return 'bottom-right';
-                    if (nearLeft) return 'left';
-                    if (nearRight) return 'right';
-                    if (nearTop) return 'top';
-                    if (nearBottom) return 'bottom';
-                    return null;
-                };
-
-                const cursorMap = {
-                    left:'ew-resize', right:'ew-resize', top:'ns-resize', bottom:'ns-resize',
-                    'top-left':'nwse-resize','bottom-right':'nwse-resize','top-right':'nesw-resize','bottom-left':'nesw-resize'
-                };
-
-                chatWindow.addEventListener('mousemove', (e) => {
-                    if (isResizing) return;
-                    mode = getMode(e);
-                    if (mode) {
-                        chatWindow.classList.add(mode.includes('-') ? 'resize-hover-corner' : 'resize-hover-edge');
-                    } else {
-                        chatWindow.classList.remove('resize-hover-edge','resize-hover-corner');
-                    }
-                });
-
-                chatWindow.addEventListener('mouseleave', () => {
-                    if (isResizing) return;
-                    mode = null;
-                    chatWindow.style.cursor = 'default';
-                    chatWindow.classList.remove('resize-hover-edge','resize-hover-corner');
-                });
-
-                const startResize = (e) => {
-                    if (!mode) return;
-                    e.preventDefault();
-                    isResizing = true;
-                    startX = e.clientX; startY = e.clientY;
-                    startW = parseInt(getComputedStyle(chatWindow).width,10);
-                    startH = parseInt(getComputedStyle(chatWindow).height,10);
-                    document.body.style.userSelect = 'none';
-                    document.addEventListener('mousemove', performResize);
-                    document.addEventListener('mouseup', endResize);
-                };
-
-                const performResize = (e) => {
-                    if (!isResizing) return;
-                    const dx = e.clientX - startX;
-                    const dy = e.clientY - startY;
-                    let w = startW;
-                    let h = startH;
-                    if (['right','top-right','bottom-right'].includes(mode)) w = startW + dx;
-                    if (['left','top-left','bottom-left'].includes(mode)) w = startW - dx;
-                    if (['bottom','bottom-left','bottom-right'].includes(mode)) h = startH + dy;
-                    if (['top','top-left','top-right'].includes(mode)) h = startH - dy;
-                    // Constraints (kept same)
-                    w = Math.max(320, Math.min(600, w));
-                    h = Math.max(400, Math.min(700, h));
-                    chatWindow.style.width = w + 'px';
-                    chatWindow.style.height = h + 'px';
-                };
-
-                const endResize = () => {
-                    isResizing = false;
-                    document.removeEventListener('mousemove', performResize);
-                    document.removeEventListener('mouseup', endResize);
-                    document.body.style.userSelect = '';
-                    chatWindow.style.cursor = 'default';
-                    chatWindow.classList.remove('resize-hover-edge','resize-hover-corner');
-                    localStorage.setItem('chatbaseWidth', chatWindow.style.width);
-                    localStorage.setItem('chatbaseHeight', chatWindow.style.height);
-                    mode = null;
-                };
-
-                chatWindow.addEventListener('mousedown', startResize);
-
-                // Inject explicit overlay handles to improve hit area above iframe
-                const addHandles = () => {
-                    const existing = chatWindow.querySelector('.chatbase-edge-handle');
-                    if (existing) return; // already added
-                    const edgeClasses = ['top','right','bottom','left'];
-                    const cornerClasses = ['tl','tr','bl','br'];
-                    edgeClasses.forEach(c => {
-                        const h = document.createElement('div');
-                        h.className = 'chatbase-edge-handle ' + c;
-                        h.addEventListener('mousedown', (e) => { mode = c; startResize(e); });
-                        chatWindow.appendChild(h);
-                    });
-                    cornerClasses.forEach(c => {
-                        const h = document.createElement('div');
-                        h.className = 'chatbase-corner-handle ' + c;
-                        h.addEventListener('mousedown', (e) => { mode = cornerMap[c]; startResize(e); });
-                        chatWindow.appendChild(h);
-                    });
-                };
-
-                const cornerMap = { tl:'top-left', tr:'top-right', bl:'bottom-left', br:'bottom-right' };
-                addHandles();
-            };
-            
-            // Try to setup resize after chat appears
-            setTimeout(setupCustomResize, 500);
-            setInterval(setupCustomResize, 1000);
-        };
-
-        observeChatState();
-    };
-
-    // Chatbase script loads bubble asynchronously; poll briefly until present
-    let attempts = 0;
-    const poll = () => {
-        if (document.getElementById(bubbleId)) {
-            attachLogic();
-        } else if (attempts < 40) { // ~4s max at 100ms interval
-            attempts++;
-            setTimeout(poll, 100);
-        }
-    };
-    poll();
 };
 
 // ==========================================================================
@@ -1541,7 +1245,6 @@ const init = () => {
             initSmoothScroll();
             initFormValidation();
             initLazyLoading();
-            initDraggableResizableChat();
             initScrollToTop();
             initAchievements();
             initKonamiCode();
@@ -1557,7 +1260,6 @@ const init = () => {
         initSmoothScroll();
         initFormValidation();
         initLazyLoading();
-        initDraggableResizableChat();
         initScrollToTop();
         initAchievements();
         initKonamiCode();
@@ -1571,238 +1273,346 @@ const init = () => {
 init();
 
 // ==========================================================================
-// Draggable + Proportional Resizable Chat Component
-// Replaces previous Chatbase bubble logic with unified bubble + panel behavior
+// Savonie AI Chatbot with Smart Signals
 // ==========================================================================
 
-function initDraggableResizableChat() {
-    // Prevent duplicate initialization
-    if (window.__chatPanelInit) return; window.__chatPanelInit = true;
+// --- Savonie AI Chatbot ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Configuration
+    const WORKER_URL = 'https://portfolio-chat.eayramia.workers.dev';
+    const WELCOME_DELAY = 2500;
 
-    const SAVONIE_IMG = "assets/img/savonie-icon.jpg"; // path used in CSS background
-    const STORAGE_KEYS = {
-        open: 'chatPanelOpen',
-        left: 'chatPanelLeft',
-        top: 'chatPanelTop',
-        width: 'chatPanelWidth',
-        height: 'chatPanelHeight'
+    // Project Data Mapping
+    const projectData = {
+        logistics: {
+            title: "Logistics System",
+            img: "assets/img/project-logistics.jpg",
+            link: "/deep-dive.html#logistics"
+        },
+        conflict: {
+            title: "Conflict Playbook",
+            img: "assets/img/project-conflict.jpg",
+            link: "/deep-dive.html#conflict"
+        },
+        discipline: {
+            title: "Discipline Routine",
+            img: "assets/img/project-discipline.jpg",
+            link: "/deep-dive.html#discipline"
+        },
+        website: {
+            title: "Portfolio Website",
+            img: "assets/img/og-image.png",
+            link: "/"
+        }
     };
 
-    const ratioClamp = (w, h) => {
-        // Limits from CSS
-        const MIN_W = 320, MAX_W = 600, MIN_H = 400, MAX_H = 700;
-        w = Math.max(MIN_W, Math.min(MAX_W, w));
-        h = Math.max(MIN_H, Math.min(MAX_H, h));
-        return [w, h];
+    // Elements
+    const els = {
+        widget: document.getElementById('chat-widget'),
+        window: document.getElementById('chat-window'),
+        header: document.getElementById('chat-header'),
+        messages: document.getElementById('chat-messages'),
+        input: document.getElementById('chat-input'),
+        sendBtn: document.getElementById('send-btn'),
+        toggleBtn: document.getElementById('chat-toggle'),
+        closeBtn: document.getElementById('close-chat'),
+        bubble: document.getElementById('welcome-bubble'),
+        chipsContainer: document.getElementById('chat-chips')
     };
 
-    // Bubble button
-    let bubble = document.getElementById('custom-chat-bubble');
-    if (!bubble) {
-        bubble = document.createElement('button');
-        bubble.id = 'custom-chat-bubble';
-        bubble.type = 'button';
-        bubble.setAttribute('aria-label','Open chat');
-        document.body.appendChild(bubble);
+    // State
+    let chatHistory = [];
+    let isInitialized = false;
+    
+    // 1. Initialize - restore history from session
+    try { 
+        const saved = sessionStorage.getItem('savonie_history');
+        if (saved) {
+            chatHistory = JSON.parse(saved);
+            chatHistory.forEach(msg => {
+                const div = document.createElement('div');
+                const userClass = 'bg-[#212842] text-white rounded-tr-none self-end ml-auto';
+                const botClass = 'bg-white text-[#362017] rounded-tl-none border border-[#362017]/5 self-start';
+                div.className = `p-3 rounded-lg shadow-sm max-w-[85%] mb-3 text-sm leading-relaxed ${msg.sender === 'user' ? userClass : botClass}`;
+                if (typeof marked !== 'undefined' && msg.sender === 'bot') {
+                    div.innerHTML = marked.parse(msg.text);
+                } else {
+                    div.textContent = msg.text;
+                }
+                els.messages?.appendChild(div);
+            });
+            // Scroll to bottom after loading history (with delay to ensure DOM is ready)
+            setTimeout(() => {
+                if (els.messages) {
+                    els.messages.scrollTop = els.messages.scrollHeight;
+                }
+            }, 100);
+        }
+    } catch(e) {}
+    
+    // Add welcome message only if no history
+    if (chatHistory.length === 0) {
+        addMessageToUI("Hello! I am Savonie. Ask me anything about Estivan.", 'bot', false);
+    }
+    
+    isInitialized = true;
+
+    // 2. Welcome Bubble Timer
+    setTimeout(() => {
+        if (els.window?.classList.contains('hidden') && chatHistory.length === 0) {
+            els.bubble?.classList.remove('opacity-0', 'translate-y-4');
+            els.bubble?.classList.add('opacity-100', 'translate-y-0');
+        }
+    }, WELCOME_DELAY);
+
+    // 3. Event Listeners
+    els.toggleBtn?.addEventListener('click', toggleChat);
+    els.closeBtn?.addEventListener('click', toggleChat);
+    els.sendBtn?.addEventListener('click', handleSend);
+    els.input?.addEventListener('keypress', (e) => e.key === 'Enter' && handleSend());
+
+    // 4. Functions
+    function toggleChat() {
+        els.window?.classList.toggle('hidden');
+        if (!els.window?.classList.contains('hidden')) {
+            if(els.bubble) els.bubble.style.display = 'none';
+            setTimeout(() => {
+                els.input?.focus();
+                // Scroll to bottom when opening chat
+                if (els.messages) {
+                    els.messages.scrollTop = els.messages.scrollHeight;
+                }
+            }, 100);
+        }
     }
 
-    // Panel container
-    let panel = document.getElementById('custom-chat-panel');
-    if (!panel) {
-        panel = document.createElement('div');
-        panel.id = 'custom-chat-panel';
-        panel.className = 'draggable-chat-panel';
-        panel.innerHTML = `
-            <div class="draggable-chat-header" role="toolbar" aria-label="Chat window header">
-                <span class="draggable-chat-title">Savonie</span>
-                <div class="draggable-chat-actions">
-                    <button type="button" class="chat-minimize" aria-label="Minimize">—</button>
-                </div>
+    async function handleSend() {
+        const text = els.input.value.trim();
+        if (!text) return;
+
+        // Google Analytics event tracking
+        if(typeof gtag === 'function') {
+            gtag('event', 'chat_question', {
+                'event_category': 'Chatbot',
+                'event_label': 'User Asked Question'
+            });
+        }
+
+        // Detect user language
+        const language = document.documentElement.lang || 'en';
+
+        addMessageToUI(text, 'user');
+        els.input.value = '';
+        const loadingId = addMessageToUI('Thinking...', 'bot', true);
+
+        try {
+            const response = await fetch(WORKER_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    message: text,
+                    language: language,
+                    pageContent: document.body.innerText.substring(0, 2000) 
+                })
+            });
+            const data = await response.json();
+            removeMessage(loadingId);
+
+            // Handle Smart Signals response
+            if (data.reply) {
+                addMessageToUI(data.reply, 'bot');
+            }
+
+            // Handle chips (suggestion buttons)
+            if (data.chips && Array.isArray(data.chips) && els.chipsContainer) {
+                els.chipsContainer.innerHTML = '';
+                data.chips.forEach(chipText => {
+                    const btn = document.createElement('button');
+                    btn.className = 'chip-btn text-xs bg-white border border-[#212842]/20 text-[#212842] px-3 py-1 rounded-full hover:bg-[#212842] hover:text-white transition-colors';
+                    btn.textContent = chipText;
+                    btn.addEventListener('click', () => {
+                        if (els.input) {
+                            els.input.value = chipText;
+                            handleSend();
+                        }
+                    });
+                    els.chipsContainer.appendChild(btn);
+                });
+            }
+
+            // Handle actions
+            if (data.action) {
+                if (data.action === 'download_resume') {
+                    const link = document.createElement('a');
+                    link.href = '/assets/resume.pdf';
+                    link.download = 'Estivan_Ayramia_Resume.pdf';
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else if (data.action === 'email_link') {
+                    window.location.href = 'mailto:hello@estivanayramia.com';
+                }
+            }
+
+            // Handle card
+            if (data.card) {
+                addCardToUI(data.card);
+            }
+
+        } catch (e) {
+            removeMessage(loadingId);
+            addMessageToUI("Offline mode. Please try again.", 'bot');
+        }
+    }
+
+    function addMessageToUI(text, sender, isLoading = false) {
+        if (!els.messages) return;
+        const div = document.createElement('div');
+        div.id = isLoading ? 'loading-msg' : '';
+        const userClass = 'bg-[#212842] text-white rounded-tr-none self-end ml-auto';
+        const botClass = 'bg-white text-[#362017] rounded-tl-none border border-[#362017]/5 self-start';
+        
+        div.className = `p-3 rounded-lg shadow-sm max-w-[85%] mb-3 text-sm leading-relaxed ${sender === 'user' ? userClass : botClass}`;
+        
+        els.messages.appendChild(div);
+        
+        // Typewriter effect for bot messages (but not loading messages)
+        if (sender === 'bot' && !isLoading) {
+            let charIndex = 0;
+            div.textContent = '';
+            
+            const typeInterval = setInterval(() => {
+                if (charIndex < text.length) {
+                    div.textContent += text[charIndex];
+                    charIndex++;
+                    els.messages.scrollTop = els.messages.scrollHeight;
+                } else {
+                    clearInterval(typeInterval);
+                    // Convert to markdown after typing is complete
+                    if (typeof marked !== 'undefined') {
+                        div.innerHTML = marked.parse(text);
+                    }
+                    els.messages.scrollTop = els.messages.scrollHeight;
+                }
+            }, 30);
+        } else {
+            div.textContent = text;
+        }
+
+        if (!isLoading && isInitialized) {
+            chatHistory.push({ text, sender });
+            sessionStorage.setItem('savonie_history', JSON.stringify(chatHistory));
+        }
+        
+        els.messages.scrollTop = els.messages.scrollHeight;
+        return div.id;
+    }
+
+    function addCardToUI(cardId) {
+        if (!els.messages || !projectData[cardId]) return;
+        
+        const project = projectData[cardId];
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-lg shadow-md overflow-hidden border border-[#362017]/10 mb-3 max-w-[85%] self-start';
+        
+        card.innerHTML = `
+            <img src="${project.img}" alt="${project.title}" class="w-full h-32 object-cover" onerror="this.src='assets/img/og-image.png'">
+            <div class="p-3">
+                <h4 class="font-semibold text-[#212842] mb-2">${project.title}</h4>
+                <a href="${project.link}" class="inline-block bg-[#212842] text-white px-4 py-2 rounded-lg text-sm hover:bg-[#362017] transition-colors">
+                    View Project
+                </a>
             </div>
-            <div class="draggable-chat-content">
-                <iframe title="Savonie" data-chat-iframe src="https://www.chatbase.co/chatbot-iframe/fe5slOh95Jd3FwQHUxFDP?theme=dark"></iframe>
-                <div class="chat-corner-handle tl" data-corner="tl">◤</div>
-                <div class="chat-corner-handle tr" data-corner="tr">◥</div>
-                <div class="chat-corner-handle bl" data-corner="bl">◣</div>
-                <div class="chat-corner-handle br" data-corner="br">◢</div>
-            </div>`;
-        document.body.appendChild(panel);
+        `;
+        
+        els.messages.appendChild(card);
+        els.messages.scrollTop = els.messages.scrollHeight;
     }
 
-    // Dynamic theme for iframe
-    const setIframeTheme = () => {
-        const theme = document.documentElement.getAttribute('data-theme') || 'light';
-        const iframe = panel.querySelector('iframe[data-chat-iframe]');
-        if (iframe) {
-            const base = 'https://www.chatbase.co/chatbot-iframe/fe5slOh95Jd3FwQHUxFDP';
-            iframe.src = `${base}?theme=${theme === 'dark' ? 'dark' : 'light'}`;
+    function removeMessage(id) {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+    }
+
+    // 5. Draggable Header Logic with Viewport Constraints
+    console.log('Draggable setup - header:', els.header, 'window:', els.window);
+    if (els.header && els.window) {
+        console.log('Setting up draggable functionality');
+        let isDragging = false, startX, startY, initialLeft, initialBottom;
+        
+        // Restore saved position
+        const savedLeft = localStorage.getItem('chatWindowLeft');
+        const savedBottom = localStorage.getItem('chatWindowBottom');
+        if (savedLeft && savedBottom) {
+            els.window.style.left = savedLeft;
+            els.window.style.bottom = savedBottom;
+            els.window.style.right = 'auto';
         }
-    };
-    setIframeTheme();
-    const mo = new MutationObserver(setIframeTheme);
-    mo.observe(document.documentElement,{ attributes:true, attributeFilter:['data-theme'] });
+        
+        // Set initial cursor
+        els.header.style.cursor = 'move';
+        console.log('Header cursor set to move');
+        
+        els.header.addEventListener('mousedown', (e) => {
+            console.log('Mousedown on header', e.target);
+            if (e.target.closest('#close-chat')) return; // Don't drag when clicking close
+            console.log('Starting drag');
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            const rect = els.window.getBoundingClientRect();
+            initialLeft = rect.left;
+            initialBottom = window.innerHeight - rect.bottom;
+            els.header.style.cursor = 'grabbing';
+            document.body.style.userSelect = 'none';
+        });
 
-    // State restoration
-    const restoreState = () => {
-        const open = localStorage.getItem(STORAGE_KEYS.open) === 'true';
-        const savedLeft = localStorage.getItem(STORAGE_KEYS.left);
-        const savedTop = localStorage.getItem(STORAGE_KEYS.top);
-        const savedW = localStorage.getItem(STORAGE_KEYS.width);
-        const savedH = localStorage.getItem(STORAGE_KEYS.height);
-        if (savedW && savedH) {
-            panel.style.width = savedW + 'px';
-            panel.style.height = savedH + 'px';
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            
+            const dx = e.clientX - startX;
+            const dy = startY - e.clientY; // Inverted for bottom positioning
+            
+            let newLeft = initialLeft + dx;
+            let newBottom = initialBottom + dy;
+            
+            // Viewport constraints (with padding)
+            const windowWidth = els.window.offsetWidth;
+            const windowHeight = els.window.offsetHeight;
+            const padding = 10;
+            
+            newLeft = Math.max(padding, Math.min(newLeft, window.innerWidth - windowWidth - padding));
+            newBottom = Math.max(padding, Math.min(newBottom, window.innerHeight - windowHeight - padding));
+            
+            els.window.style.left = `${newLeft}px`;
+            els.window.style.bottom = `${newBottom}px`;
+            els.window.style.right = 'auto';
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            els.header.style.cursor = 'move';
+            document.body.style.userSelect = '';
+            
+            // Save position
+            localStorage.setItem('chatWindowLeft', els.window.style.left);
+            localStorage.setItem('chatWindowBottom', els.window.style.bottom);
+        });
+    }
+
+    // 6. Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+        // Escape to close chat
+        if (e.key === 'Escape' && !els.window?.classList.contains('hidden')) {
+            toggleChat();
         }
-        if (savedLeft && savedTop) {
-            panel.style.left = savedLeft + 'px';
-            panel.style.top = savedTop + 'px';
-            panel.style.right = 'auto';
-            panel.style.bottom = 'auto';
+        // Ctrl/Cmd + K to toggle chat
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            toggleChat();
         }
-        if (open) openPanel();
-    };
-
-    // Open/close panel helpers
-    const openPanel = () => {
-        panel.classList.add('open');
-        bubble.classList.add('chat-open-hide-bubble');
-        localStorage.setItem(STORAGE_KEYS.open, 'true');
-    };
-    const closePanel = () => {
-        panel.classList.remove('open');
-        bubble.classList.remove('chat-open-hide-bubble');
-        localStorage.setItem(STORAGE_KEYS.open, 'false');
-    };
-
-    bubble.addEventListener('click', () => {
-        panel.classList.contains('open') ? closePanel() : openPanel();
     });
-
-    // Header actions
-    const minimizeBtn = panel.querySelector('.chat-minimize');
-    minimizeBtn.addEventListener('click', () => closePanel());
-
-    // Drag logic (header only) - using Pointer Events API
-    const header = panel.querySelector('.draggable-chat-header');
-    let dragging = false; let dragOffsetX = 0; let dragOffsetY = 0; let activePointerId = null;
-    
-    const onDragMove = (e) => {
-        if (!dragging || e.pointerId !== activePointerId) return;
-        e.preventDefault();
-        let x = e.clientX - dragOffsetX;
-        let y = e.clientY - dragOffsetY;
-        // Constrain within viewport
-        const pw = panel.offsetWidth; const ph = panel.offsetHeight;
-        x = Math.max(0, Math.min(x, window.innerWidth - pw));
-        y = Math.max(0, Math.min(y, window.innerHeight - ph));
-        panel.style.left = x + 'px'; panel.style.top = y + 'px';
-        panel.style.right = 'auto'; panel.style.bottom = 'auto';
-    };
-    
-    const endDrag = (e) => {
-        if (!dragging || e.pointerId !== activePointerId) return;
-        e.preventDefault();
-        dragging = false;
-        activePointerId = null;
-        document.body.style.userSelect = '';
-        document.body.style.cursor = '';
-        panel.classList.remove('dragging');
-        localStorage.setItem(STORAGE_KEYS.left, parseInt(panel.style.left,10));
-        localStorage.setItem(STORAGE_KEYS.top, parseInt(panel.style.top,10));
-        header.releasePointerCapture(e.pointerId);
-        header.removeEventListener('pointermove', onDragMove);
-        header.removeEventListener('pointerup', endDrag);
-        header.removeEventListener('pointercancel', endDrag);
-    };
-    
-    const startDrag = (e) => {
-        if (e.target.closest('.draggable-chat-actions')) return; // don't drag from buttons
-        e.preventDefault();
-        dragging = true;
-        activePointerId = e.pointerId;
-        panel.classList.add('dragging');
-        document.body.style.userSelect = 'none';
-        document.body.style.cursor = 'move';
-        const rect = panel.getBoundingClientRect();
-        dragOffsetX = e.clientX - rect.left;
-        dragOffsetY = e.clientY - rect.top;
-        header.setPointerCapture(e.pointerId);
-        header.addEventListener('pointermove', onDragMove, {passive: false});
-        header.addEventListener('pointerup', endDrag, {passive: false});
-        header.addEventListener('pointercancel', endDrag, {passive: false});
-    };
-    
-    header.addEventListener('pointerdown', startDrag);
-
-    // Proportional resize via corner handles - using Pointer Events API
-    let resizing = false; let startW=0, startH=0, startX=0, startY=0, corner=''; let aspect = 420/560; let activeResizePointerId = null; let activeHandle = null;
-    aspect = panel.offsetWidth / panel.offsetHeight || aspect;
-
-    const onResizeMove = (e) => {
-        if (!resizing || !corner || e.pointerId !== activeResizePointerId) return;
-        e.preventDefault();
-        e.stopPropagation();
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-        // Decide scale factor based on corner
-        let scaleDelta = 0;
-        if (corner === 'tl') scaleDelta = (-dx - dy) / 2;
-        if (corner === 'tr') scaleDelta = (dx - dy) / 2;
-        if (corner === 'bl') scaleDelta = (-dx + dy) / 2;
-        if (corner === 'br') scaleDelta = (dx + dy) / 2;
-        let newW = startW + scaleDelta;
-        let newH = newW / aspect;
-        [newW, newH] = ratioClamp(newW, newH);
-        panel.style.width = newW + 'px'; panel.style.height = newH + 'px';
-        panel.classList.add('resizing');
-    };
-    const endResize = (e) => {
-        if (!resizing || e.pointerId !== activeResizePointerId) return;
-        e.preventDefault();
-        resizing = false;
-        corner = '';
-        activeResizePointerId = null;
-        panel.classList.remove('resizing');
-        document.body.style.userSelect = '';
-        document.body.style.cursor = '';
-        localStorage.setItem(STORAGE_KEYS.width, parseInt(panel.style.width,10));
-        localStorage.setItem(STORAGE_KEYS.height, parseInt(panel.style.height,10));
-    };
-    const startResize = (e, c, handle) => {
-        e.preventDefault();
-        e.stopPropagation();
-        resizing = true;
-        corner = c;
-        activeResizePointerId = e.pointerId;
-        activeHandle = handle;
-        document.body.style.userSelect = 'none';
-        document.body.style.cursor = 'nwse-resize';
-        startW = panel.offsetWidth;
-        startH = panel.offsetHeight;
-        startX = e.clientX;
-        startY = e.clientY;
-        aspect = startW / startH;
-        handle.setPointerCapture(e.pointerId);
-        handle.addEventListener('pointermove', onResizeMove, {passive: false});
-        handle.addEventListener('pointerup', endResize, {passive: false});
-        handle.addEventListener('pointercancel', endResize, {passive: false});
-    };
-    panel.querySelectorAll('.chat-corner-handle').forEach(h => {
-        h.addEventListener('pointerdown', (e) => startResize(e, h.dataset.corner, h));
-    });
-
-    // Keep panel inside viewport on resize of window
-    window.addEventListener('resize', () => {
-        if (!panel.classList.contains('open')) return;
-        const rect = panel.getBoundingClientRect();
-        let left = rect.left; let top = rect.top; let w = rect.width; let h = rect.height;
-        if (left + w > window.innerWidth) left = window.innerWidth - w;
-        if (top + h > window.innerHeight) top = window.innerHeight - h;
-        left = Math.max(0,left); top = Math.max(0,top);
-        panel.style.left = left + 'px'; panel.style.top = top + 'px';
-        localStorage.setItem(STORAGE_KEYS.left, left);
-        localStorage.setItem(STORAGE_KEYS.top, top);
-    });
-
-    restoreState();
-}
+});
