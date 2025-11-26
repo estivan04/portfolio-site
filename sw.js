@@ -13,7 +13,7 @@ const ASSETS_TO_CACHE = [
     '/404.html',
     '/assets/css/theme.css',
     '/assets/js/site.js',
-    '/assets/img/headshot.jpg'
+    '/assets/img/headshot.webp'
 ];
 
 // Install event - cache assets

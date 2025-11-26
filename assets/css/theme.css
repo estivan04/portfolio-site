@@ -367,7 +367,7 @@ body {
     border-radius: 50% !important;
     box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     /* Layer 1 (top): ring that covers image corners; Layer 2: Savonie image */
-    background-image: radial-gradient(circle at center, transparent 43%, var(--bubble-ring) 44%), url('../img/savonie-icon.jpg') !important;
+    background-image: radial-gradient(circle at center, transparent 43%, var(--bubble-ring) 44%), url('../img/savonie-icon.webp') !important;
     background-repeat: no-repeat, no-repeat !important;
     background-size: 100% 100%, 80% 80% !important; /* full-size ring + scaled icon */
     background-position: center center, center center !important;
@@ -672,7 +672,7 @@ select {
     cursor: pointer;
     z-index: 2147483600;
     border: 2px solid rgba(0,0,0,0.25);
-    background-image: radial-gradient(circle at center, transparent 44%, var(--bubble-ring) 45%), url('../img/savonie-icon.jpg');
+    background-image: radial-gradient(circle at center, transparent 44%, var(--bubble-ring) 45%), url('../img/savonie-icon.webp');
     background-size: 100% 100%, 78% 78%;
     background-position: center center;
     background-repeat: no-repeat;
