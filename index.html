@@ -73,8 +73,46 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#212842">
     
+    <!-- Cache Control for Mobile -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <!-- Markdown Parser for Chat -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Auto Cache Refresh Script -->
+    <script>
+        // Force cache refresh on mobile
+        (function() {
+            const BUILD_VERSION = '20251125-001';
+            const lastVersion = localStorage.getItem('siteVersion');
+            
+            if (lastVersion !== BUILD_VERSION) {
+                // Clear all caches
+                if ('caches' in window) {
+                    caches.keys().then(function(names) {
+                        names.forEach(name => caches.delete(name));
+                    });
+                }
+                
+                // Unregister service workers
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                        registrations.forEach(reg => reg.unregister());
+                    });
+                }
+                
+                // Update version
+                localStorage.setItem('siteVersion', BUILD_VERSION);
+                
+                // Force reload if not first visit
+                if (lastVersion) {
+                    window.location.reload(true);
+                }
+            }
+        })();
+    </script>
 </head>
 <body class="bg-beige text-chocolate font-sans antialiased">
     
