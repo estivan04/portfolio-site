@@ -1304,16 +1304,58 @@ select.border-red-500 {
    Savonie AI Chat Widget Styles
    ========================================================================== */
 
-/* Hide scrollbars in chat */
-#chat-messages::-webkit-scrollbar,
-#chat-chips::-webkit-scrollbar {
+/* Hide scrollbars in chat messages (keep clean look) */
+#chat-messages::-webkit-scrollbar {
     display: none;
 }
 
-#chat-messages,
-#chat-chips {
+#chat-messages {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+/* Visible horizontal scrollbar for chat chips */
+#chat-chips {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(33, 40, 66, 0.3) transparent;
+}
+
+#chat-chips::-webkit-scrollbar {
+    height: 4px;
+    display: block;
+}
+
+#chat-chips::-webkit-scrollbar-track {
+    background: rgba(54, 32, 23, 0.05);
+    border-radius: 2px;
+}
+
+#chat-chips::-webkit-scrollbar-thumb {
+    background: rgba(33, 40, 66, 0.25);
+    border-radius: 2px;
+}
+
+#chat-chips::-webkit-scrollbar-thumb:hover {
+    background: rgba(33, 40, 66, 0.4);
+}
+
+/* Dark mode chat chips scrollbar */
+[data-theme="dark"] #chat-chips {
+    scrollbar-color: rgba(225, 212, 194, 0.3) transparent;
+}
+
+[data-theme="dark"] #chat-chips::-webkit-scrollbar-track {
+    background: rgba(225, 212, 194, 0.05);
+}
+
+[data-theme="dark"] #chat-chips::-webkit-scrollbar-thumb {
+    background: rgba(225, 212, 194, 0.25);
+}
+
+[data-theme="dark"] #chat-chips::-webkit-scrollbar-thumb:hover {
+    background: rgba(225, 212, 194, 0.4);
 }
 
 /* Mobile chat widget adjustments */
@@ -1533,6 +1575,58 @@ select.border-red-500 {
     border-color: rgba(225, 212, 194, 0.4);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+   Voice Input Microphone Button
+   ========================================================================== */
+
+#mic-btn {
+    background-color: transparent;
+    color: #362017;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#mic-btn:hover {
+    background-color: rgba(33, 40, 66, 0.1);
+    color: #212842;
+}
+
+#mic-btn.listening {
+    background-color: #dc2626;
+    color: white;
+    animation: pulse-mic 1s infinite;
+}
+
+@keyframes pulse-mic {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 8px rgba(220, 38, 38, 0);
+    }
+}
+
+/* Dark mode mic button */
+[data-theme="dark"] #mic-btn {
+    color: #e1d4c2;
+}
+
+[data-theme="dark"] #mic-btn:hover {
+    background-color: rgba(225, 212, 194, 0.15);
+    color: #ffffff;
+}
+
+[data-theme="dark"] #mic-btn.listening {
+    background-color: #dc2626;
+    color: white;
 }
 
 

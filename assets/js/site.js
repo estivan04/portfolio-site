@@ -1362,19 +1362,73 @@ document.addEventListener('DOMContentLoaded', () => {
     
     isInitialized = true;
 
-    // 2. Welcome Bubble Timer
-    setTimeout(() => {
-        if (els.window?.classList.contains('hidden') && chatHistory.length === 0) {
-            els.bubble?.classList.remove('opacity-0', 'translate-y-4');
-            els.bubble?.classList.add('opacity-100', 'translate-y-0');
-        }
-    }, WELCOME_DELAY);
+    // 2. Welcome Bubble Timer (only show twice max)
+    const bubbleShowCount = parseInt(sessionStorage.getItem('savonie_bubble_count') || '0');
+    if (bubbleShowCount < 2) {
+        setTimeout(() => {
+            if (els.window?.classList.contains('hidden') && chatHistory.length === 0) {
+                els.bubble?.classList.remove('opacity-0', 'translate-y-4');
+                els.bubble?.classList.add('opacity-100', 'translate-y-0');
+                sessionStorage.setItem('savonie_bubble_count', (bubbleShowCount + 1).toString());
+            }
+        }, WELCOME_DELAY);
+    }
 
     // 3. Event Listeners
     els.toggleBtn?.addEventListener('click', toggleChat);
     els.closeBtn?.addEventListener('click', toggleChat);
     els.sendBtn?.addEventListener('click', handleSend);
     els.input?.addEventListener('keypress', (e) => e.key === 'Enter' && handleSend());
+
+    // 3.5 Voice Input (Speech Recognition)
+    const micBtn = document.getElementById('mic-btn');
+    let recognition = null;
+    let isListening = false;
+
+    if (micBtn && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = document.documentElement.lang || 'en-US';
+
+        recognition.onstart = () => {
+            isListening = true;
+            micBtn.classList.add('listening');
+            micBtn.setAttribute('aria-label', 'Listening...');
+        };
+
+        recognition.onend = () => {
+            isListening = false;
+            micBtn.classList.remove('listening');
+            micBtn.setAttribute('aria-label', 'Voice input');
+        };
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            if (els.input && transcript) {
+                els.input.value = transcript;
+                els.input.focus();
+            }
+        };
+
+        recognition.onerror = (event) => {
+            console.warn('Speech recognition error:', event.error);
+            isListening = false;
+            micBtn.classList.remove('listening');
+        };
+
+        micBtn.addEventListener('click', () => {
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        });
+    } else if (micBtn) {
+        // Hide mic button if speech recognition is not supported
+        micBtn.style.display = 'none';
+    }
 
     // 4. Functions
     function toggleChat() {
