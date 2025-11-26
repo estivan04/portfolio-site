@@ -1,15 +1,25 @@
 /**
- * Lazy Loader - Defers render-blocking scripts for better PageSpeed
- * Loads analytics (GTM, Clarity) and dependencies (Marked.js) after page load
+ * Lazy Loader - Interaction-Based Script Loading for Maximum PageSpeed
+ * =====================================================================
+ * Strategy: DO NOT load analytics or heavy scripts until user interacts.
+ * This keeps the main thread clear during initial page load, boosting scores.
+ * 
+ * Triggers: scroll, mousemove, touchstart, keydown
+ * Once triggered, loads: Google Analytics (GTM), Microsoft Clarity, Marked.js
  */
 
 (function() {
     'use strict';
 
     // Configuration
-    const ANALYTICS_DELAY = 2000; // Delay analytics by 2s for faster initial paint
     const GTM_ID = 'G-MCN4RXCY6Q';
     const CLARITY_ID = 'ubbdpwxnae';
+    
+    // Track if scripts have been loaded (only load once)
+    let scriptsLoaded = false;
+    
+    // Interaction events that trigger script loading
+    const INTERACTION_EVENTS = ['scroll', 'mousemove', 'touchstart', 'keydown', 'click'];
 
     /**
      * Inject a script element into the document
@@ -51,6 +61,7 @@
 
         // Load gtag script
         injectScript(`https://www.googletagmanager.com/gtag/js?id=${GTM_ID}`);
+        console.log('[LazyLoader] Google Analytics loaded');
     }
 
     /**
@@ -69,57 +80,78 @@
             })(window, document, "clarity", "script", "${CLARITY_ID}");
         `;
         injectInlineScript(clarityScript);
+        console.log('[LazyLoader] Microsoft Clarity loaded');
     }
 
     /**
      * Load Marked.js for markdown parsing in chat
      */
-    function loadMarkedJS(callback) {
+    function loadMarkedJS() {
         injectScript(
             'https://cdn.jsdelivr.net/npm/marked/marked.min.js',
             true,
-            callback
+            function() {
+                console.log('[LazyLoader] Marked.js loaded');
+            }
         );
     }
 
     /**
-     * Use requestIdleCallback if available, else setTimeout
-     * @param {Function} fn - Function to execute when idle
-     * @param {number} timeout - Fallback timeout in ms
+     * Load all deferred scripts - called once on first user interaction
      */
-    function onIdle(fn, timeout = 2000) {
+    function loadAllScripts() {
+        if (scriptsLoaded) return;
+        scriptsLoaded = true;
+        
+        // Remove all interaction listeners to prevent duplicate loads
+        INTERACTION_EVENTS.forEach(function(event) {
+            window.removeEventListener(event, onFirstInteraction, { passive: true, capture: true });
+            document.removeEventListener(event, onFirstInteraction, { passive: true, capture: true });
+        });
+        
+        console.log('[LazyLoader] User interaction detected - loading scripts...');
+        
+        // Load all scripts with slight stagger to prevent main thread congestion
+        loadMarkedJS();
+        
+        // Use requestIdleCallback for analytics to minimize impact
         if ('requestIdleCallback' in window) {
-            requestIdleCallback(fn, { timeout: timeout });
+            requestIdleCallback(function() {
+                loadGoogleAnalytics();
+                loadClarity();
+            }, { timeout: 3000 });
         } else {
-            setTimeout(fn, timeout);
+            setTimeout(function() {
+                loadGoogleAnalytics();
+                loadClarity();
+            }, 100);
         }
     }
 
     /**
-     * Initialize lazy loading after page load
+     * Handler for first user interaction
      */
-    function init() {
-        // Load Marked.js immediately but async (needed for chat)
-        loadMarkedJS(function() {
-            console.log('[LazyLoader] Marked.js loaded');
-        });
-
-        // Defer analytics until idle to minimize main thread work
-        onIdle(function() {
-            loadGoogleAnalytics();
-            console.log('[LazyLoader] Google Analytics loaded');
-        }, ANALYTICS_DELAY);
-
-        onIdle(function() {
-            loadClarity();
-            console.log('[LazyLoader] Microsoft Clarity loaded');
-        }, ANALYTICS_DELAY + 100);
+    function onFirstInteraction() {
+        loadAllScripts();
     }
 
-    // Start lazy loading after page has fully loaded
-    if (document.readyState === 'complete') {
-        init();
+    /**
+     * Initialize interaction-based lazy loading
+     */
+    function init() {
+        // Register listeners for user interaction events
+        INTERACTION_EVENTS.forEach(function(event) {
+            window.addEventListener(event, onFirstInteraction, { passive: true, capture: true, once: true });
+            document.addEventListener(event, onFirstInteraction, { passive: true, capture: true, once: true });
+        });
+        
+        console.log('[LazyLoader] Waiting for user interaction to load scripts...');
+    }
+
+    // Start watching for interactions after DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
     } else {
-        window.addEventListener('load', init);
+        init();
     }
 })();

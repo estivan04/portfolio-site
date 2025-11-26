@@ -14,7 +14,8 @@ const ASSETS_TO_CACHE = [
     '/assets/css/theme.css',
     '/assets/js/site.js',
     '/assets/js/lazy-loader.js',
-    '/assets/img/headshot.webp'
+    '/assets/img/headshot.webp',
+    '/assets/img/savonie-thumb.webp'
 ];
 
 // Install event - cache assets

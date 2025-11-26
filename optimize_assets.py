@@ -41,8 +41,61 @@ PROJECT_ROOT = Path(".")
 WEBP_QUALITY = 80
 LOGO_ICON_MAX_WIDTH = 300
 HERO_PROJECT_MAX_WIDTH = 1200
+CHAT_THUMB_SIZE = 64  # Thumbnail size for chat toggle/header icons
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 HTML_FILES_PATTERN = "*.html"
+
+
+def create_thumbnail(image_path: Path, size: int = CHAT_THUMB_SIZE) -> tuple[bool, str]:
+    """
+    Create a thumbnail version of an image at the specified size.
+    Used for chat UI icons that need to be smaller than the full image.
+    
+    Args:
+        image_path: Path to the source image
+        size: Target size in pixels (creates a square thumbnail)
+    
+    Returns:
+        tuple: (success: bool, message: str)
+    """
+    try:
+        with Image.open(image_path) as img:
+            # Convert to RGB/RGBA as needed
+            if img.mode in ("RGBA", "LA", "P"):
+                if img.mode == "P":
+                    img = img.convert("RGBA")
+            elif img.mode != "RGB":
+                img = img.convert("RGB")
+            
+            # Create square thumbnail maintaining aspect ratio with center crop
+            # First resize to have shortest side = size, then center crop
+            width, height = img.size
+            if width > height:
+                new_height = size
+                new_width = int(width * (size / height))
+            else:
+                new_width = size
+                new_height = int(height * (size / width))
+            
+            img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+            
+            # Center crop to exact size x size
+            left = (new_width - size) // 2
+            top = (new_height - size) // 2
+            img = img.crop((left, top, left + size, top + size))
+            
+            # Generate thumbnail filename (e.g., savonie-icon.webp -> savonie-thumb.webp)
+            stem = image_path.stem.replace("-icon", "").replace("_icon", "")
+            output_path = image_path.parent / f"{stem}-thumb.webp"
+            
+            # Save as WebP
+            img.save(output_path, "WEBP", quality=WEBP_QUALITY, method=6)
+            
+            new_size_kb = output_path.stat().st_size / 1024
+            return True, f"Created {output_path.name} ({size}x{size}px, {new_size_kb:.1f}KB)"
+            
+    except Exception as e:
+        return False, f"Error creating thumbnail: {str(e)}"
 
 
 def is_logo_or_icon(filename: str) -> bool:
@@ -345,6 +398,29 @@ def main():
             print(f"✓ Successfully converted: {success_count}")
             print(f"✗ Errors: {error_count}")
             print(f"Original files: PRESERVED (not deleted)")
+        
+        # Generate chat icon thumbnails
+        print("\n" + "-" * 60)
+        print("CHAT ICON THUMBNAIL GENERATION")
+        print("-" * 60)
+        
+        # Look for savonie-icon files (jpg, jpeg, png, or webp)
+        savonie_icon = None
+        for ext in [".webp", ".jpg", ".jpeg", ".png"]:
+            candidate = ASSETS_DIR / f"savonie-icon{ext}"
+            if candidate.exists():
+                savonie_icon = candidate
+                break
+        
+        if savonie_icon:
+            print(f"Found chat icon: {savonie_icon.name}")
+            success, message = create_thumbnail(savonie_icon, CHAT_THUMB_SIZE)
+            if success:
+                print(f"    ✓ {message}")
+            else:
+                print(f"    ✗ {message}")
+        else:
+            print("No savonie-icon found in assets/img/")
     
     # Always update HTML dimensions
     files_updated, total_updated, total_skipped = process_all_html_files()
