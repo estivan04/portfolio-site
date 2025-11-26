@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Safari Pinned Tab Icon: Monochrome vector mask matching EA ribbon monogram. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000">
+  <defs>
+    <style>
+      .shape { fill: #000; }
+    </style>
+  </defs>
+  <!-- Rounded square for crisp small-size rendering -->
+  <rect class="shape" x="80" y="80" rx="160" ry="160" width="840" height="840" />
+  <!-- EA Ribbon "E" curve -->
+  <path class="shape" d="M270 680q-90-50-90-140 0-74 60-121 46-37 120-51 56-10 128-10h62q40 0 40 36 0 34-40 34h-70q-94 0-156 24-70 28-70 88 0 40 36 62 34 20 86 20 62 0 122-22 66-24 126-74 32-26 56-26 36 0 36 36 0 24-20 44-70 70-164 108-96 38-188 38-78 0-134-46z"/>
+  <!-- EA Ribbon "A" sweep with crossbar -->
+  <path class="shape" d="M560 700q0-140 70-240 30-44 70-44 44 0 74 48 54 84 54 236 0 36-36 36-28 0-34-30-14-112-58-178-14-20-24-20-12 0-26 20-36 56-50 172-4 30-34 30-32 0-32-30z"/>
+  <rect class="shape" x="560" y="540" width="220" height="44" rx="22" />
+</svg>

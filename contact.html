@@ -6,6 +6,15 @@
     <meta name="description" content="Get in touch to discuss operations roles, projects, or systems thinking. Contact via form or email.">
     <title>Contact | Portfolio</title>
     
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Contact Estivan Ayramia">
+    <meta property="og:description" content="Get in touch to discuss operations roles, projects, or systems thinking.">
+    <meta property="og:url" content="https://estivanayramia.com/contact.html">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Contact Estivan Ayramia">
+    <meta name="twitter:description" content="Discuss operations roles, projects, or systems thinking.">
+    
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,6 +61,17 @@
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
         })(window, document, "clarity", "script", "ubbdpwxnae");
     </script>
+
+    <!-- PWA Manifest -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
+    <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
+    <link rel="mask-icon" href="/assets/img/safari-pinned-tab.svg" color="#212842">
+    <meta name="msapplication-TileColor" content="#212842">
+    <meta name="msapplication-TileImage" content="/assets/img/favicon-32x32.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#212842">
 </head>
 <body class="bg-beige text-chocolate font-sans antialiased">
     
@@ -62,8 +82,8 @@
     <header class="fixed top-0 left-0 right-0 z-40 bg-beige/95 backdrop-blur-sm border-b border-chocolate/10">
         <nav class="max-w-7xl mx-auto px-6 lg:px-12 py-6 flex items-center justify-between">
             <a href="index.html" class="text-xl font-semibold text-indigodeep hover:text-chocolate transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded inline-flex items-center" aria-label="Go to Portfolio home page">
-                <svg class="w-5 h-5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5"/><path d="M5 10v10h14V10"/><path d="M9 21V13h6v8"/></svg>
-                <span>Portfolio</span>
+                <img src="/assets/img/logo-ea.png" alt="EA" class="h-8 w-8 mr-2 object-contain" loading="eager">
+                <span>Estivan Ayramia</span>
             </a>
             
             <!-- Main Navigation -->
@@ -324,7 +344,10 @@
             <div class="grid md:grid-cols-3 gap-12 mb-12">
                 <!-- Column 1: Brand -->
                 <div class="space-y-4">
-                    <h3 class="text-xl font-semibold text-white">Portfolio</h3>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <img src="/assets/img/logo-ea.png" alt="EA" class="h-12 w-12 object-contain">
+                        <h3 class="text-xl font-semibold text-white">Estivan Ayramia</h3>
+                    </div>
                     <p class="text-sm text-beige/80 leading-relaxed">Systems, people, clean execution. Making complex operations run smoothly.</p>
                 </div>
                 
@@ -345,7 +368,6 @@
                     <ul class="space-y-2">
                         <li><a href="https://www.linkedin.com/in/estivanayramia" target="_blank" rel="noopener noreferrer" class="text-sm text-beige/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">LinkedIn</a></li>
                         <li><a href="https://github.com/estivanayramia/" target="_blank" rel="noopener noreferrer" class="text-sm text-beige/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">GitHub</a></li>
-                        <li><span class="text-sm text-beige/80">hello@estivanayramia.com</span></li>
                         <li><a href="contact.html" class="text-sm text-white font-medium focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">Contact</a></li>
                         <li><a href="privacy.html" class="text-sm text-beige/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigodeep rounded">Privacy Policy</a></li>
                     </ul>
@@ -372,7 +394,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
     
     <!-- Site JavaScript -->
-    <script src="assets/js/site.js" defer></script>
+    <script src="/assets/js/site.js" defer></script>
+    
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" aria-label="Scroll to top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
     
 </body>
 </html>

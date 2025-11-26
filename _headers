@@ -1,0 +1,48 @@
+# Cloudflare _headers file for security and performance
+# Place this file in the root of your deployed site
+
+/*
+  # Security Headers
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+  
+  # Content Security Policy
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://www.chatbase.co https://www.clarity.ms https://c.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://formspree.io https://www.clarity.ms https://c.clarity.ms; frame-src https://www.chatbase.co; worker-src 'self'
+  
+  # Performance Headers
+  Cache-Control: public, max-age=3600, must-revalidate
+
+# Cache static assets for 1 year
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache images for 1 month
+*.jpg
+  Cache-Control: public, max-age=2592000
+
+*.png
+  Cache-Control: public, max-age=2592000
+
+*.svg
+  Cache-Control: public, max-age=2592000
+
+*.webp
+  Cache-Control: public, max-age=2592000
+
+# Cache fonts for 1 year
+*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+*.woff
+  Cache-Control: public, max-age=31536000, immutable
+
+# Service Worker - no cache
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# Manifest
+/manifest.json
+  Cache-Control: public, max-age=86400

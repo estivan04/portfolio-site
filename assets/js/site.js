@@ -23,6 +23,11 @@ const initDarkMode = () => {
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
         
+        // Track analytics
+        if (typeof clarity === 'function') {
+            clarity('event', 'theme_toggle', { theme: newTheme });
+        }
+        
         // Update ARIA label
         toggleButton.setAttribute('aria-label', `Switch to ${theme} mode`);
     };
@@ -221,19 +226,49 @@ const initFormValidation = () => {
         });
     }
 
-    // Add blur event listeners for real-time validation
+    // Helper to show inline error
+    const showError = (input, message) => {
+        input.classList.add('border-red-500');
+        let errorEl = input.parentElement.querySelector('.inline-error');
+        if (!errorEl) {
+            errorEl = document.createElement('p');
+            errorEl.className = 'inline-error text-xs text-red-600 mt-1';
+            input.parentElement.appendChild(errorEl);
+        }
+        errorEl.textContent = message;
+    };
+
+    // Helper to clear inline error
+    const clearError = (input) => {
+        input.classList.remove('border-red-500');
+        const errorEl = input.parentElement.querySelector('.inline-error');
+        if (errorEl) errorEl.remove();
+    };
+
+    // Real-time validation for each input
     inputs.forEach(input => {
+        // Validate on blur
         input.addEventListener('blur', () => {
-            if (!input.checkValidity()) {
-                input.classList.add('border-red-500');
+            if (input.hasAttribute('required') && !input.value.trim()) {
+                showError(input, 'This field is required');
+            } else if (input.type === 'email' && input.value && !input.checkValidity()) {
+                showError(input, 'Please enter a valid email address');
+            } else if (input.type === 'url' && input.value && !isSafeUrl(input.value)) {
+                showError(input, 'Please enter a valid URL');
+            } else if (!input.checkValidity()) {
+                showError(input, input.validationMessage || 'Invalid input');
             } else {
-                input.classList.remove('border-red-500');
+                clearError(input);
             }
         });
 
+        // Clear error as user types
         input.addEventListener('input', () => {
             if (input.classList.contains('border-red-500')) {
-                input.classList.remove('border-red-500');
+                // Re-validate on input to clear error when fixed
+                if (input.checkValidity() && input.value.trim()) {
+                    clearError(input);
+                }
             }
         });
     });
@@ -1039,6 +1074,460 @@ const initChatbotBubble = () => {
 };
 
 // ==========================================================================
+// Scroll to Top Button
+// ==========================================================================
+
+const initScrollToTop = () => {
+    const scrollBtn = document.getElementById('scroll-to-top');
+    console.log('Scroll button element:', scrollBtn);
+    if (!scrollBtn) {
+        console.error('Scroll-to-top button not found!');
+        return;
+    }
+
+    // Show/hide button based on scroll position (25% of page height)
+    const toggleButton = () => {
+        const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollThreshold = pageHeight * 0.25;
+        const currentScroll = window.scrollY;
+        
+        console.log('Scroll check:', { currentScroll, scrollThreshold, pageHeight });
+        
+        if (currentScroll > scrollThreshold) {
+            scrollBtn.classList.add('show');
+            console.log('Button shown');
+        } else {
+            scrollBtn.classList.remove('show');
+            console.log('Button hidden');
+        }
+    };
+
+    // Scroll to top smoothly
+    const scrollToTop = () => {
+        console.log('Scrolling to top');
+        
+        // Track analytics
+        if (typeof clarity === 'function') {
+            clarity('event', 'scroll_to_top_clicked');
+        }
+        
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    // Event listeners
+    window.addEventListener('scroll', toggleButton);
+    scrollBtn.addEventListener('click', scrollToTop);
+    
+    // Check initial position
+    toggleButton();
+};
+
+// ==========================================================================
+// Achievement System
+// ==========================================================================
+
+const initAchievements = () => {
+    const STORAGE_KEY = 'portfolio_achievements';
+    
+    // Achievement definitions
+    const achievements = {
+        explorer: { id: 'explorer', name: 'Explorer', description: 'Visited all main pages', icon: '🗺️' },
+        reader: { id: 'reader', name: 'Deep Diver', description: 'Read the full Deep Dive', icon: '📖' },
+        gamer: { id: 'gamer', name: 'Game Master', description: 'Played the contact form game', icon: '🎮' },
+        chatter: { id: 'chatter', name: 'Conversationalist', description: 'Opened the chat', icon: '💬' },
+        nightOwl: { id: 'nightOwl', name: 'Night Owl', description: 'Toggled dark mode', icon: '🌙' },
+        konami: { id: 'konami', name: 'Secret Discoverer', description: 'Found the Konami code', icon: '🎯' },
+        networker: { id: 'networker', name: 'Networker', description: 'Visited social profiles', icon: '🔗' },
+        formFiller: { id: 'formFiller', name: 'Messenger', description: 'Submitted the contact form', icon: '✉️' }
+    };
+
+    // Get achievements from storage
+    const getAchievements = () => {
+        try {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            return stored ? JSON.parse(stored) : {};
+        } catch {
+            return {};
+        }
+    };
+
+    // Save achievements to storage
+    const saveAchievements = (unlocked) => {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(unlocked));
+        } catch {}
+    };
+
+    // Unlock achievement
+    const unlock = (achievementId) => {
+        const unlocked = getAchievements();
+        if (unlocked[achievementId]) return; // Already unlocked
+        
+        unlocked[achievementId] = {
+            unlockedAt: new Date().toISOString(),
+            ...achievements[achievementId]
+        };
+        saveAchievements(unlocked);
+        showAchievementNotification(achievements[achievementId]);
+    };
+
+    // Show achievement notification
+    const showAchievementNotification = (achievement) => {
+        const notification = document.createElement('div');
+        notification.className = 'achievement-notification';
+        notification.innerHTML = `
+            <div class="achievement-icon">${achievement.icon}</div>
+            <div class="achievement-content">
+                <div class="achievement-title">Achievement Unlocked!</div>
+                <div class="achievement-name">${achievement.name}</div>
+                <div class="achievement-desc">${achievement.description}</div>
+            </div>
+        `;
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => notification.classList.add('show'), 100);
+        
+        // Remove after 4 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 300);
+        }, 4000);
+    };
+
+    // Track page visits
+    const trackPageVisit = () => {
+        const visitedKey = 'portfolio_visited_pages';
+        try {
+            const visited = JSON.parse(localStorage.getItem(visitedKey) || '[]');
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            
+            if (!visited.includes(currentPage)) {
+                visited.push(currentPage);
+                localStorage.setItem(visitedKey, JSON.stringify(visited));
+            }
+
+            // Check if all main pages visited
+            const mainPages = ['index.html', 'overview.html', 'deep-dive.html', 'about.html', 'projects.html', 'contact.html'];
+            const visitedAll = mainPages.every(page => visited.includes(page));
+            if (visitedAll) unlock('explorer');
+
+            // Check specific pages
+            if (currentPage === 'deep-dive.html') unlock('reader');
+        } catch {}
+    };
+
+    // Track dark mode toggle
+    const trackDarkMode = () => {
+        const toggleButton = document.getElementById('theme-toggle');
+        if (toggleButton) {
+            toggleButton.addEventListener('click', () => unlock('nightOwl'));
+        }
+    };
+
+    // Track external links (social profiles)
+    const trackExternalLinks = () => {
+        document.querySelectorAll('a[href*="linkedin.com"], a[href*="github.com"]').forEach(link => {
+            link.addEventListener('click', () => unlock('networker'));
+        });
+    };
+
+    // Initialize tracking
+    trackPageVisit();
+    trackDarkMode();
+    trackExternalLinks();
+
+    // Expose unlock function globally for form submission
+    window.unlockAchievement = unlock;
+};
+
+// ==========================================================================
+// Konami Code Easter Egg
+// ==========================================================================
+
+const initKonamiCode = () => {
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let konamiIndex = 0;
+
+    const triggerEasterEgg = () => {
+        // Dispatch custom event for analytics tracking
+        window.dispatchEvent(new Event('konami-activated'));
+        
+        // Unlock achievement
+        if (window.unlockAchievement) {
+            window.unlockAchievement('konami');
+        }
+
+        // Create modal overlay
+        const modal = document.createElement('div');
+        modal.className = 'konami-modal';
+        modal.innerHTML = `
+            <div class="konami-content">
+                <div class="konami-header">
+                    <h2>🎮 You found the secret!</h2>
+                    <button class="konami-close" aria-label="Close">&times;</button>
+                </div>
+                <div class="konami-body">
+                    <p class="konami-message">Congratulations! You've unlocked the Konami code.</p>
+                    <div class="konami-gift">
+                        <div class="gift-emoji">🎁</div>
+                        <p class="gift-text">Here's a little something:</p>
+                        <code class="gift-code">RELIABILITY + EXECUTION = SUCCESS</code>
+                        <p class="gift-subtext">The formula that drives everything on this site.</p>
+                    </div>
+                    <div class="konami-stats">
+                        <p>You're one of the <strong>${Math.floor(Math.random() * 10) + 1}%</strong> who found this!</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        // Animate in
+        setTimeout(() => modal.classList.add('show'), 100);
+
+        // Close handlers
+        const close = () => {
+            modal.classList.remove('show');
+            setTimeout(() => modal.remove(), 300);
+        };
+        modal.querySelector('.konami-close').addEventListener('click', close);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) close();
+        });
+    };
+
+    // Listen for Konami code
+    document.addEventListener('keydown', (e) => {
+        if (e.key === konamiCode[konamiIndex]) {
+            konamiIndex++;
+            if (konamiIndex === konamiCode.length) {
+                konamiIndex = 0;
+                triggerEasterEgg();
+            }
+        } else {
+            konamiIndex = 0;
+        }
+    });
+};
+
+// ==========================================================================
+// PWA Service Worker Registration
+// ==========================================================================
+
+const initPWA = () => {
+    // Register service worker for offline support
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then((registration) => {
+                    console.log('Service Worker registered:', registration.scope);
+
+                    // Periodically check for updates
+                    setInterval(() => {
+                        registration.update();
+                    }, 60000);
+
+                    // If there's an update waiting, skip waiting and reload
+                    if (registration.waiting) {
+                        registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                    }
+
+                    // Listen for new service worker controlling the page
+                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                        console.log('Service Worker controller changed. Reloading to apply latest.');
+                        window.location.reload();
+                    });
+
+                    // Detect updates found
+                    registration.addEventListener('updatefound', () => {
+                        const newSW = registration.installing;
+                        if (newSW) {
+                            newSW.addEventListener('statechange', () => {
+                                if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // New content is available; activate immediately
+                                    newSW.postMessage({ type: 'SKIP_WAITING' });
+                                }
+                            });
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.log('Service Worker registration failed:', error);
+                });
+        });
+    }
+
+    // Prompt to install PWA
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        // Optionally show install button (you can add this to your UI)
+        console.log('PWA install prompt available');
+    });
+};
+
+// ==========================================================================
+// Analytics Tracking (Microsoft Clarity)
+// ==========================================================================
+
+const initAnalytics = () => {
+    // Track button clicks
+    const trackClick = (element, label) => {
+        if (typeof clarity === 'function') {
+            clarity('event', `button_click_${label}`);
+        }
+    };
+
+    // Track all CTA buttons
+    document.querySelectorAll('a[href*="contact"], button[type="submit"]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const label = btn.textContent.trim().replace(/\s+/g, '_').toLowerCase();
+            trackClick(btn, label);
+        });
+    });
+
+    // Track navigation clicks
+    document.querySelectorAll('nav a').forEach((link) => {
+        link.addEventListener('click', () => {
+            const page = link.getAttribute('href') || 'unknown';
+            if (typeof clarity === 'function') {
+                clarity('event', 'navigation_click', { page });
+            }
+        });
+    });
+
+    // Track social media clicks
+    document.querySelectorAll('a[href*="linkedin.com"], a[href*="github.com"]').forEach((link) => {
+        link.addEventListener('click', () => {
+            const platform = link.href.includes('linkedin') ? 'linkedin' : 'github';
+            if (typeof clarity === 'function') {
+                clarity('event', 'social_click', { platform });
+            }
+        });
+    });
+
+    // Track form submissions
+    const form = document.querySelector('form[action*="formspree.io"]');
+    if (form) {
+        form.addEventListener('submit', () => {
+            if (typeof clarity === 'function') {
+                clarity('event', 'form_submission');
+            }
+        });
+    }
+
+    // Track scroll depth
+    let maxScrollDepth = 0;
+    window.addEventListener('scroll', () => {
+        const scrollDepth = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+        if (scrollDepth > maxScrollDepth) {
+            maxScrollDepth = scrollDepth;
+            if (maxScrollDepth >= 25 && maxScrollDepth < 50 && typeof clarity === 'function') {
+                clarity('event', 'scroll_25_percent');
+            } else if (maxScrollDepth >= 50 && maxScrollDepth < 75 && typeof clarity === 'function') {
+                clarity('event', 'scroll_50_percent');
+            } else if (maxScrollDepth >= 75 && maxScrollDepth < 100 && typeof clarity === 'function') {
+                clarity('event', 'scroll_75_percent');
+            } else if (maxScrollDepth >= 100 && typeof clarity === 'function') {
+                clarity('event', 'scroll_100_percent');
+            }
+        }
+    });
+
+    // Track Konami code usage
+    window.addEventListener('konami-activated', () => {
+        if (typeof clarity === 'function') {
+            clarity('event', 'konami_code_activated');
+        }
+    });
+
+    // Track achievement unlocks
+    const originalUnlock = window.unlockAchievement;
+    if (originalUnlock) {
+        window.unlockAchievement = (achievementId) => {
+            if (typeof clarity === 'function') {
+                clarity('event', 'achievement_unlocked', { achievement: achievementId });
+            }
+            originalUnlock(achievementId);
+        };
+    }
+};
+
+// ==========================================================================
+// Performance Monitoring (LCP)
+// ==========================================================================
+
+const initPerformanceMonitoring = () => {
+    // Monitor Largest Contentful Paint
+    if ('PerformanceObserver' in window) {
+        try {
+            const observer = new PerformanceObserver((list) => {
+                const entries = list.getEntries();
+                const lastEntry = entries[entries.length - 1];
+                
+                console.log('LCP:', lastEntry.renderTime || lastEntry.loadTime);
+                
+                // Send to Clarity
+                if (typeof clarity === 'function') {
+                    clarity('set', 'lcp', Math.round(lastEntry.renderTime || lastEntry.loadTime));
+                }
+                
+                // Warn if LCP is poor (> 2.5s)
+                const lcp = lastEntry.renderTime || lastEntry.loadTime;
+                if (lcp > 2500) {
+                    console.warn('Poor LCP detected:', lcp, 'ms');
+                }
+            });
+            
+            observer.observe({ type: 'largest-contentful-paint', buffered: true });
+        } catch (e) {
+            console.log('Performance monitoring not supported');
+        }
+    }
+
+    // Monitor Core Web Vitals
+    if ('web-vital' in window) {
+        // First Input Delay (FID)
+        try {
+            const fidObserver = new PerformanceObserver((list) => {
+                const entries = list.getEntries();
+                entries.forEach((entry) => {
+                    const fid = entry.processingStart - entry.startTime;
+                    console.log('FID:', fid);
+                    if (typeof clarity === 'function') {
+                        clarity('set', 'fid', Math.round(fid));
+                    }
+                });
+            });
+            fidObserver.observe({ type: 'first-input', buffered: true });
+        } catch (e) {}
+
+        // Cumulative Layout Shift (CLS)
+        try {
+            let clsScore = 0;
+            const clsObserver = new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                    if (!entry.hadRecentInput) {
+                        clsScore += entry.value;
+                    }
+                }
+                console.log('CLS:', clsScore);
+                if (typeof clarity === 'function') {
+                    clarity('set', 'cls', clsScore.toFixed(4));
+                }
+            });
+            clsObserver.observe({ type: 'layout-shift', buffered: true });
+        } catch (e) {}
+    }
+};
+
+// ==========================================================================
 // Initialization
 // ==========================================================================
 
@@ -1053,6 +1542,12 @@ const init = () => {
             initFormValidation();
             initLazyLoading();
             initDraggableResizableChat();
+            initScrollToTop();
+            initAchievements();
+            initKonamiCode();
+            initPWA();
+            initAnalytics();
+            initPerformanceMonitoring();
         });
     } else {
         // DOM already loaded
@@ -1063,6 +1558,12 @@ const init = () => {
         initFormValidation();
         initLazyLoading();
         initDraggableResizableChat();
+        initScrollToTop();
+        initAchievements();
+        initKonamiCode();
+        initPWA();
+        initAnalytics();
+        initPerformanceMonitoring();
     }
 };
 
