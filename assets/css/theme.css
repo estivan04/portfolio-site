@@ -684,6 +684,16 @@ select {
     border-color: rgba(225,212,194,0.35);
 }
 
+/* Welcome bubble dark mode */
+[data-theme="dark"] #welcome-bubble {
+    background-color: #212842;
+    border-color: rgba(225,212,194,0.2);
+}
+
+[data-theme="dark"] #welcome-bubble p {
+    color: #e1d4c2 !important;
+}
+
 #custom-chat-bubble:hover {
     box-shadow: 0 6px 20px rgba(0,0,0,0.45);
 }
