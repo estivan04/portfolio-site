@@ -1380,6 +1380,18 @@ document.addEventListener('DOMContentLoaded', () => {
     els.sendBtn?.addEventListener('click', handleSend);
     els.input?.addEventListener('keypress', (e) => e.key === 'Enter' && handleSend());
 
+    // 3.1 Static Chip Buttons (pre-existing in HTML)
+    if (els.chipsContainer) {
+        els.chipsContainer.querySelectorAll('.chip-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (els.input) {
+                    els.input.value = btn.textContent;
+                    handleSend();
+                }
+            });
+        });
+    }
+
     // 3.5 Voice Input (Speech Recognition)
     const micBtn = document.getElementById('mic-btn');
     let recognition = null;
