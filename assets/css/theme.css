@@ -1645,4 +1645,37 @@ select.border-red-500 {
     color: white;
 }
 
+/* ========================================
+   ACCESSIBILITY: Touch Targets & Contrast
+   ======================================== */
+
+/* Minimum 48x48px touch targets for mobile */
+#chat-toggle,
+#mobile-menu-toggle,
+#send-btn,
+#mic-btn,
+#theme-toggle,
+#scroll-to-top {
+    min-width: 48px;
+    min-height: 48px;
+}
+
+/* Improved contrast for beige text on dark backgrounds (WCAG AA) */
+.text-beige\/80 {
+    color: rgba(225, 212, 194, 0.95) !important;
+}
+
+[data-theme="dark"] .text-beige\/60 {
+    color: rgba(225, 212, 194, 0.85) !important;
+}
+
+/* Ensure footer links have sufficient contrast in dark mode */
+[data-theme="dark"] footer a {
+    color: rgba(225, 212, 194, 0.9);
+}
+
+[data-theme="dark"] footer a:hover {
+    color: #ffffff;
+}
+
 

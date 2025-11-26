@@ -16,9 +16,11 @@
     <meta name="twitter:description" content="Discuss operations roles, projects, or systems thinking.">
     
     <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Inter (non-render-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
     
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -85,7 +87,7 @@
     <header class="fixed top-0 left-0 right-0 z-40 bg-beige/95 backdrop-blur-sm border-b border-chocolate/10">
         <nav class="max-w-7xl mx-auto px-6 lg:px-12 py-6 flex items-center justify-between">
             <a href="index.html" class="text-xl font-semibold text-indigodeep hover:text-chocolate transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded inline-flex items-center" aria-label="Go to Portfolio home page">
-                <img src="/assets/img/logo-ea.png" alt="EA" class="h-8 w-8 mr-2 object-contain" loading="eager">
+                <img src="/assets/img/logo-ea.png" alt="EA" class="h-8 w-8 mr-2 object-contain" width="32" height="32" fetchpriority="high">
                 <span>Estivan Ayramia</span>
             </a>
             
@@ -348,7 +350,7 @@
                 <!-- Column 1: Brand -->
                 <div class="space-y-4">
                     <div class="flex items-center space-x-3 mb-4">
-                        <img src="/assets/img/logo-ea.png" alt="EA" class="h-12 w-12 object-contain">
+                        <img src="/assets/img/logo-ea.png" alt="EA" class="h-12 w-12 object-contain" width="48" height="48">
                         <h3 class="text-xl font-semibold text-white">Estivan Ayramia</h3>
                     </div>
                     <p class="text-sm text-beige/80 leading-relaxed">Systems, people, clean execution. Making complex operations run smoothly.</p>
@@ -402,7 +404,7 @@
         <div id="chat-window" class="hidden w-80 h-[500px] bg-[#e1d4c2]/95 backdrop-blur-md rounded-2xl shadow-2xl border border-[#362017]/10 overflow-hidden mb-4 flex flex-col origin-bottom-right">
             <div id="chat-header" class="bg-[#212842] p-4 flex justify-between items-center shrink-0 cursor-move select-none">
                 <h3 class="text-white font-medium text-sm flex items-center gap-2 pointer-events-none">
-                    <img src="/assets/img/savonie-icon.jpg" alt="Savonie" class="w-6 h-6 rounded-full border border-white/20 object-cover">
+                    <img src="/assets/img/savonie-icon.jpg" alt="Savonie" class="w-6 h-6 rounded-full border border-white/20 object-cover" width="24" height="24">
                     Savonie AI
                 </h3>
                 <button id="close-chat" class="text-white/80 hover:text-white text-xl leading-none cursor-pointer">&times;</button>
@@ -421,7 +423,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
                 </button>
                 <input type="text" id="chat-input" placeholder="Ask a question..." class="flex-1 bg-[#e1d4c2]/30 border-none rounded-lg px-4 py-2 text-sm text-[#362017] focus:ring-2 focus:ring-[#212842]/20 outline-none">
-                <button id="send-btn" class="bg-[#212842] text-white px-3 rounded-lg hover:bg-[#362017] transition-colors shrink-0">
+                <button id="send-btn" class="bg-[#212842] text-white px-3 rounded-lg hover:bg-[#362017] transition-colors shrink-0" aria-label="Send Message">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                 </button>
             </div>
@@ -431,8 +433,8 @@
             <p class="text-sm font-medium text-[#362017]">Hi, maybe I can help? 👋</p>
         </div>
 
-        <button id="chat-toggle" class="bg-[#212842] w-16 h-16 rounded-full shadow-xl flex items-center justify-center hover:scale-105 hover:rotate-3 transition-all duration-300 group border-2 border-white/10 relative overflow-hidden">
-            <img src="/assets/img/savonie-icon.jpg" alt="Chat" class="w-full h-full object-cover">
+        <button id="chat-toggle" class="bg-[#212842] w-16 h-16 rounded-full shadow-xl flex items-center justify-center hover:scale-105 hover:rotate-3 transition-all duration-300 group border-2 border-white/10 relative overflow-hidden" aria-label="Open Chat">
+            <img src="/assets/img/savonie-icon.jpg" alt="Chat" class="w-full h-full object-cover" width="64" height="64">
         </button>
     </div>
     
