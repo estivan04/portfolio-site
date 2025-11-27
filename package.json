@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "description": "Estivan Ayramia's portfolio site with PWA support",
   "scripts": {
-    "build": "tailwindcss -i ./assets/css/input.css -o ./assets/css/style.css --minify",
-    "watch": "tailwindcss -i ./assets/css/input.css -o ./assets/css/style.css --watch"
+    "build": "npx tailwindcss -i ./assets/css/input.css -o ./assets/css/style.css --minify",
+    "watch": "npx tailwindcss -i ./assets/css/input.css -o ./assets/css/style.css --watch"
   },
   "keywords": [
     "portfolio",
