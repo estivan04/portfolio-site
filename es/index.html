@@ -16,28 +16,7 @@
     <!-- Preload Critical LCP Image -->
     <link rel="preload" as="image" href="/assets/img/logo-ea.webp" type="image/webp">
     
-    <!-- Preload Tailwind CSS CDN for faster initial paint -->
-    <link rel="preload" href="https://cdn.tailwindcss.com" as="script" crossorigin>
-    
-    <!-- Tailwind CSS via CDN -->
-    <script src="https://cdn.tailwindcss.com" fetchpriority="high"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        beige: '#e1d4c2',
-                        chocolate: '#362017',
-                        indigodeep: '#212842',
-                        ink: '#0a0a0a'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'Helvetica', 'Arial', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="/assets/css/style.css">
     
     <!-- Custom Theme CSS (non-render-blocking) -->
     <link rel="stylesheet" href="../assets/css/theme.css" media="print" onload="this.media='all'">
