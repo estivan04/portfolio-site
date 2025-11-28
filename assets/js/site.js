@@ -15,6 +15,9 @@ const initDarkMode = () => {
     const currentTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', currentTheme);
 
+    // Set initial icon
+    toggleButton.innerHTML = currentTheme === 'dark' ? '<span style="color: #e1d4c2">🔆</span>' : '<span style="color: #212842">🌙</span>';
+
     // Toggle theme function
     const toggleTheme = () => {
         const theme = document.documentElement.getAttribute('data-theme');
@@ -22,6 +25,9 @@ const initDarkMode = () => {
         
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
+        
+        // Update icon
+        toggleButton.innerHTML = newTheme === 'dark' ? '<span style="color: #e1d4c2">🔆</span>' : '<span style="color: #212842">🌙</span>';
         
         // Track analytics
         if (typeof clarity === 'function') {
@@ -788,38 +794,28 @@ const initLazyLoading = () => {
 
 const initScrollToTop = () => {
     const scrollBtn = document.getElementById('scroll-to-top');
-    console.log('Scroll button element:', scrollBtn);
-    if (!scrollBtn) {
-        console.error('Scroll-to-top button not found!');
-        return;
-    }
+    if (!scrollBtn) return;
 
     // Show/hide button based on scroll position (25% of page height)
     const toggleButton = () => {
         const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
         const scrollThreshold = pageHeight * 0.25;
         const currentScroll = window.scrollY;
-        
-        console.log('Scroll check:', { currentScroll, scrollThreshold, pageHeight });
-        
+
         if (currentScroll > scrollThreshold) {
             scrollBtn.classList.add('show');
-            console.log('Button shown');
         } else {
             scrollBtn.classList.remove('show');
-            console.log('Button hidden');
         }
     };
 
     // Scroll to top smoothly
     const scrollToTop = () => {
-        console.log('Scrolling to top');
-        
         // Track analytics
         if (typeof clarity === 'function') {
             clarity('event', 'scroll_to_top_clicked');
         }
-        
+
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
@@ -829,7 +825,7 @@ const initScrollToTop = () => {
     // Event listeners
     window.addEventListener('scroll', toggleButton);
     scrollBtn.addEventListener('click', scrollToTop);
-    
+
     // Check initial position
     toggleButton();
 };
@@ -837,20 +833,139 @@ const initScrollToTop = () => {
 // ==========================================================================
 // Achievement System
 // ==========================================================================
+// Translation System for Achievements and Easter Eggs
+// ==========================================================================
+
+const getCurrentLanguage = () => {
+    return document.documentElement.lang || 'en';
+};
+
+const translations = {
+    // Achievement notification text
+    achievement: {
+        en: {
+            unlocked: 'Achievement Unlocked!',
+            explorer: { name: 'Explorer', description: 'Visited all main pages' },
+            reader: { name: 'Deep Diver', description: 'Read the full Deep Dive' },
+            gamer: { name: 'Game Master', description: 'Played the contact form game' },
+            chatter: { name: 'Conversationalist', description: 'Opened the chat' },
+            nightOwl: { name: 'Night Owl', description: 'Toggled dark mode' },
+            konami: { name: 'Secret Discoverer', description: 'Found the Konami code' },
+            networker: { name: 'Networker', description: 'Visited social profiles' },
+            formFiller: { name: 'Messenger', description: 'Submitted the contact form' }
+        },
+        es: {
+            unlocked: '¡Logro Desbloqueado!',
+            explorer: { name: 'Explorador', description: 'Visitó todas las páginas principales' },
+            reader: { name: 'Buzo Profundo', description: 'Leyó la inmersión completa' },
+            gamer: { name: 'Maestro del Juego', description: 'Jugó el juego del formulario de contacto' },
+            chatter: { name: 'Conversador', description: 'Abrió el chat' },
+            nightOwl: { name: 'Noctámbulo', description: 'Alternó el modo oscuro' },
+            konami: { name: 'Descubridor Secreto', description: 'Encontró el código Konami' },
+            networker: { name: 'Redactor', description: 'Visitó perfiles sociales' },
+            formFiller: { name: 'Mensajero', description: 'Envió el formulario de contacto' }
+        },
+        ar: {
+            unlocked: 'تم إلغاء قفل الإنجاز!',
+            explorer: { name: 'المستكشف', description: 'زار جميع الصفحات الرئيسية' },
+            reader: { name: 'الغواص العميق', description: 'قرأ الغوص الكامل' },
+            gamer: { name: 'سيد اللعبة', description: 'لعب لعبة نموذج الاتصال' },
+            chatter: { name: 'المحادث', description: 'فتح الدردشة' },
+            nightOwl: { name: 'بومة الليل', description: 'بدّل الوضع المظلم' },
+            konami: { name: 'المكتشف السري', description: 'وجد رمز كونامي' },
+            networker: { name: 'الشبكي', description: 'زار الملفات الشخصية الاجتماعية' },
+            formFiller: { name: 'الرسول', description: 'أرسل نموذج الاتصال' }
+        }
+    },
+    // Konami code messages
+    konami: {
+        en: {
+            title: '🎮 You found the secret!',
+            message: 'Congratulations! You\'ve unlocked the Konami code.',
+            giftText: 'Click the gift for a surprise!',
+            stats: 'You\'re one of the {percent}% who found this!',
+            compliments: [
+                "You're absolutely amazing! 🌟",
+                "You're a coding wizard! 🧙‍♂️",
+                "You're incredibly talented! 🎨",
+                "You're a problem-solving genius! 🧠",
+                "You're making the world better! 🌍",
+                "You're a creative powerhouse! ⚡",
+                "You're inspiring others! 💫",
+                "You're a true innovator! 🚀",
+                "You're exceptionally skilled! 🏆",
+                "You're a digital artist! 🎭",
+                "You're building something incredible! 🏗️",
+                "You're a technology trailblazer! 🗺️",
+                "You're exceptionally creative! 🎨",
+                "You're a user experience master! 🎯",
+                "You're a design virtuoso! 🎨"
+            ]
+        },
+        es: {
+            title: '🎮 ¡Encontraste el secreto!',
+            message: '¡Felicitaciones! Has desbloqueado el código Konami.',
+            giftText: '¡Haz clic en el regalo para una sorpresa!',
+            stats: '¡Eres uno del {percent}% que encontró esto!',
+            compliments: [
+                "¡Eres absolutamente increíble! 🌟",
+                "¡Eres un mago de la programación! 🧙‍♂️",
+                "¡Eres increíblemente talentoso! 🎨",
+                "¡Eres un genio para resolver problemas! 🧠",
+                "¡Estás haciendo el mundo mejor! 🌍",
+                "¡Eres una potencia creativa! ⚡",
+                "¡Estás inspirando a otros! 💫",
+                "¡Eres un verdadero innovador! 🚀",
+                "¡Eres excepcionalmente hábil! 🏆",
+                "¡Eres un artista digital! 🎭",
+                "¡Estás construyendo algo increíble! 🏗️",
+                "¡Eres un pionero de la tecnología! 🗺️",
+                "¡Eres excepcionalmente creativo! 🎨",
+                "¡Eres un maestro de la experiencia del usuario! 🎯",
+                "¡Eres un virtuoso del diseño! 🎨"
+            ]
+        },
+        ar: {
+            title: '🎮 لقد وجدت السر!',
+            message: 'تهانينا! لقد قمت بفتح رمز كونامي.',
+            giftText: 'انقر على الهدية للحصول على مفاجأة!',
+            stats: 'أنت واحد من {percent}% الذين وجدوا هذا!',
+            compliments: [
+                "أنت رائع تماماً! 🌟",
+                "أنت ساحر برمجة! 🧙‍♂️",
+                "أنت موهوب بشكل لا يصدق! 🎨",
+                "أنت عبقري في حل المشكلات! 🧠",
+                "أنت تجعل العالم أفضل! 🌍",
+                "أنت قوة إبداعية! ⚡",
+                "أنت تلهم الآخرين! 💫",
+                "أنت مبتكر حقيقي! 🚀",
+                "أنت ماهر بشكل استثنائي! 🏆",
+                "أنت فنان رقمي! 🎭",
+                "أنت تبني شيئاً مذهلاً! 🏗️",
+                "أنت رائد تكنولوجيا! 🗺️",
+                "أنت مبدع بشكل استثنائي! 🎨",
+                "أنت خبير في تجربة المستخدم! 🎯",
+                "أنت فنان تصميم! 🎨"
+            ]
+        }
+    }
+};
+
+// ==========================================================================
 
 const initAchievements = () => {
     const STORAGE_KEY = 'portfolio_achievements';
     
-    // Achievement definitions
+    // Achievement definitions (now using translations)
     const achievements = {
-        explorer: { id: 'explorer', name: 'Explorer', description: 'Visited all main pages', icon: '🗺️' },
-        reader: { id: 'reader', name: 'Deep Diver', description: 'Read the full Deep Dive', icon: '📖' },
-        gamer: { id: 'gamer', name: 'Game Master', description: 'Played the contact form game', icon: '🎮' },
-        chatter: { id: 'chatter', name: 'Conversationalist', description: 'Opened the chat', icon: '💬' },
-        nightOwl: { id: 'nightOwl', name: 'Night Owl', description: 'Toggled dark mode', icon: '🌙' },
-        konami: { id: 'konami', name: 'Secret Discoverer', description: 'Found the Konami code', icon: '🎯' },
-        networker: { id: 'networker', name: 'Networker', description: 'Visited social profiles', icon: '🔗' },
-        formFiller: { id: 'formFiller', name: 'Messenger', description: 'Submitted the contact form', icon: '✉️' }
+        explorer: { id: 'explorer', icon: '🗺️' },
+        reader: { id: 'reader', icon: '📖' },
+        gamer: { id: 'gamer', icon: '🎮' },
+        chatter: { id: 'chatter', icon: '💬' },
+        nightOwl: { id: 'nightOwl', icon: '🌙' },
+        konami: { id: 'konami', icon: '🎯' },
+        networker: { id: 'networker', icon: '🔗' },
+        formFiller: { id: 'formFiller', icon: '✉️' }
     };
 
     // Get achievements from storage
@@ -875,36 +990,57 @@ const initAchievements = () => {
         const unlocked = getAchievements();
         if (unlocked[achievementId]) return; // Already unlocked
         
+        const lang = getCurrentLanguage();
+        const translatedAchievement = {
+            ...achievements[achievementId],
+            ...translations.achievement[lang][achievementId]
+        };
+        
         unlocked[achievementId] = {
             unlockedAt: new Date().toISOString(),
-            ...achievements[achievementId]
+            ...translatedAchievement
         };
         saveAchievements(unlocked);
-        showAchievementNotification(achievements[achievementId]);
+        showAchievementNotification(translatedAchievement);
     };
 
     // Show achievement notification
     const showAchievementNotification = (achievement) => {
+        const lang = getCurrentLanguage();
         const notification = document.createElement('div');
         notification.className = 'achievement-notification';
         notification.innerHTML = `
             <div class="achievement-icon">${achievement.icon}</div>
             <div class="achievement-content">
-                <div class="achievement-title">Achievement Unlocked!</div>
+                <div class="achievement-title">${translations.achievement[lang].unlocked}</div>
                 <div class="achievement-name">${achievement.name}</div>
                 <div class="achievement-desc">${achievement.description}</div>
             </div>
+            <button class="achievement-close" aria-label="Close achievement notification">×</button>
         `;
         document.body.appendChild(notification);
+
+        // Close button functionality
+        const closeButton = notification.querySelector('.achievement-close');
+        const closeNotification = () => {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 300);
+        };
+        
+        closeButton.addEventListener('click', closeNotification);
 
         // Animate in
         setTimeout(() => notification.classList.add('show'), 100);
         
-        // Remove after 4 seconds
-        setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => notification.remove(), 300);
+        // Remove after 4 seconds (unless manually closed)
+        const autoCloseTimeout = setTimeout(() => {
+            if (document.body.contains(notification)) {
+                closeNotification();
+            }
         }, 4000);
+
+        // Clear auto-close if manually closed
+        closeButton.addEventListener('click', () => clearTimeout(autoCloseTimeout));
     };
 
     // Track page visits
@@ -970,25 +1106,30 @@ const initKonamiCode = () => {
             window.unlockAchievement('konami');
         }
 
+        // Get current language translations
+        const lang = getCurrentLanguage();
+        const konamiText = translations.konami[lang];
+
         // Create modal overlay
         const modal = document.createElement('div');
         modal.className = 'konami-modal';
         modal.innerHTML = `
             <div class="konami-content">
                 <div class="konami-header">
-                    <h2>🎮 You found the secret!</h2>
+                    <h2>${konamiText.title}</h2>
                     <button class="konami-close" aria-label="Close">&times;</button>
                 </div>
                 <div class="konami-body">
-                    <p class="konami-message">Congratulations! You've unlocked the Konami code.</p>
+                    <p class="konami-message">${konamiText.message}</p>
                     <div class="konami-gift">
                         <div class="gift-emoji">🎁</div>
-                        <p class="gift-text">Here's a little something:</p>
-                        <code class="gift-code">RELIABILITY + EXECUTION = SUCCESS</code>
-                        <p class="gift-subtext">The formula that drives everything on this site.</p>
+                        <p class="gift-text">${konamiText.giftText}</p>
+                        <div class="compliment-container" style="display: none;">
+                            <p class="compliment-text"></p>
+                        </div>
                     </div>
                     <div class="konami-stats">
-                        <p>You're one of the <strong>${Math.floor(Math.random() * 10) + 1}%</strong> who found this!</p>
+                        <p>${konamiText.stats.replace('{percent}', Math.floor(Math.random() * 10) + 1)}</p>
                     </div>
                 </div>
             </div>
@@ -997,6 +1138,36 @@ const initKonamiCode = () => {
 
         // Animate in
         setTimeout(() => modal.classList.add('show'), 100);
+
+        // Gift click functionality
+        const giftEmoji = modal.querySelector('.gift-emoji');
+        const complimentContainer = modal.querySelector('.compliment-container');
+        const complimentText = modal.querySelector('.compliment-text');
+        const giftText = modal.querySelector('.gift-text');
+
+        const compliments = konamiText.compliments;
+
+        giftEmoji.addEventListener('click', () => {
+            // Hide gift emoji and text
+            giftEmoji.style.display = 'none';
+            giftText.style.display = 'none';
+
+            // Show random compliment
+            const randomCompliment = compliments[Math.floor(Math.random() * compliments.length)];
+            complimentText.textContent = randomCompliment;
+            complimentContainer.style.display = 'block';
+
+            // Add opening animation
+            giftEmoji.classList.add('gift-opened');
+
+            // Trigger confetti
+            createConfetti();
+
+            // Add sparkle effect
+            setTimeout(() => {
+                complimentContainer.classList.add('sparkle');
+            }, 500);
+        });
 
         // Close handlers
         const close = () => {
@@ -1007,6 +1178,29 @@ const initKonamiCode = () => {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) close();
         });
+    };
+
+    // Confetti function
+    const createConfetti = () => {
+        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b', '#eb4d4b', '#6c5ce7', '#a29bfe', '#fd79a8', '#e17055'];
+        const confettiCount = 50;
+
+        for (let i = 0; i < confettiCount; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDelay = Math.random() * 3 + 's';
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(confetti);
+
+            // Remove confetti after animation
+            setTimeout(() => {
+                if (confetti.parentNode) {
+                    confetti.parentNode.removeChild(confetti);
+                }
+            }, 5000);
+        }
     };
 
     // Listen for Konami code
@@ -1033,7 +1227,6 @@ const initPWA = () => {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js')
                 .then((registration) => {
-                    console.log('Service Worker registered:', registration.scope);
 
                     // Periodically check for updates
                     setInterval(() => {
@@ -1047,7 +1240,6 @@ const initPWA = () => {
 
                     // Listen for new service worker controlling the page
                     navigator.serviceWorker.addEventListener('controllerchange', () => {
-                        console.log('Service Worker controller changed. Reloading to apply latest.');
                         window.location.reload();
                     });
 
@@ -1065,7 +1257,7 @@ const initPWA = () => {
                     });
                 })
                 .catch((error) => {
-                    console.log('Service Worker registration failed:', error);
+                    // Service worker registration failed - continue without it
                 });
         });
     }
@@ -1075,9 +1267,8 @@ const initPWA = () => {
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        
+
         // Optionally show install button (you can add this to your UI)
-        console.log('PWA install prompt available');
     });
 };
 
@@ -1180,8 +1371,6 @@ const initPerformanceMonitoring = () => {
                 const entries = list.getEntries();
                 const lastEntry = entries[entries.length - 1];
                 
-                console.log('LCP:', lastEntry.renderTime || lastEntry.loadTime);
-                
                 // Send to Clarity
                 if (typeof clarity === 'function') {
                     clarity('set', 'lcp', Math.round(lastEntry.renderTime || lastEntry.loadTime));
@@ -1196,7 +1385,7 @@ const initPerformanceMonitoring = () => {
             
             observer.observe({ type: 'largest-contentful-paint', buffered: true });
         } catch (e) {
-            console.log('Performance monitoring not supported');
+            // Performance monitoring not supported
         }
     }
 
@@ -1208,7 +1397,6 @@ const initPerformanceMonitoring = () => {
                 const entries = list.getEntries();
                 entries.forEach((entry) => {
                     const fid = entry.processingStart - entry.startTime;
-                    console.log('FID:', fid);
                     if (typeof clarity === 'function') {
                         clarity('set', 'fid', Math.round(fid));
                     }
@@ -1226,7 +1414,6 @@ const initPerformanceMonitoring = () => {
                         clsScore += entry.value;
                     }
                 }
-                console.log('CLS:', clsScore);
                 if (typeof clarity === 'function') {
                     clarity('set', 'cls', clsScore.toFixed(4));
                 }
@@ -1322,11 +1509,13 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleBtn: document.getElementById('chat-toggle'),
         closeBtn: document.getElementById('close-chat'),
         bubble: document.getElementById('welcome-bubble'),
-        chipsContainer: document.getElementById('chat-chips')
+        chipsContainer: document.getElementById('chat-chips'),
+        suggestionsBtn: document.getElementById('suggestions-btn')
     };
 
     // State
     let chatHistory = [];
+    let isSending = false; // Prevent duplicate sends
     let isInitialized = false;
     
     // 1. Initialize - restore history from session
@@ -1358,6 +1547,41 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add welcome message only if no history
     if (chatHistory.length === 0) {
         addMessageToUI("Hello! I am Savonie. Ask me anything about Estivan.", 'bot', false);
+        
+        // Add default chips for home page
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        if (currentPage === 'index.html' && els.chipsContainer) {
+            const defaultChips = [
+                "What does Estivan do?",
+                "Tell me about his background",
+                "What are his skills?",
+                "How can I contact him?"
+            ];
+            
+            els.chipsContainer.innerHTML = '';
+            defaultChips.forEach(chipText => {
+                const btn = document.createElement('button');
+                btn.className = 'chip-btn text-xs bg-white border border-[#212842]/20 text-[#212842] px-3 py-1 rounded-full hover:bg-[#212842] hover:text-white transition-colors';
+                btn.textContent = chipText;
+                btn.addEventListener('click', () => {
+                    if (els.input) {
+                        els.input.value = chipText;
+                        handleSend();
+                    }
+                });
+                els.chipsContainer.appendChild(btn);
+            });
+            
+            // Add close button
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'chip-close-btn text-xs text-[#362017]/60 hover:text-[#362017] px-2 py-1 ml-2 transition-colors';
+            closeBtn.innerHTML = '×';
+            closeBtn.title = 'Hide suggestions';
+            closeBtn.addEventListener('click', () => {
+                els.chipsContainer.style.display = 'none';
+            });
+            els.chipsContainer.appendChild(closeBtn);
+        }
     }
     
     isInitialized = true;
@@ -1379,6 +1603,47 @@ document.addEventListener('DOMContentLoaded', () => {
     els.closeBtn?.addEventListener('click', toggleChat);
     els.sendBtn?.addEventListener('click', handleSend);
     els.input?.addEventListener('keypress', (e) => e.key === 'Enter' && handleSend());
+    els.suggestionsBtn?.addEventListener('click', () => {
+        if (els.chipsContainer) {
+            const isVisible = els.chipsContainer.style.display === 'flex';
+            if (isVisible) {
+                // Hide suggestions
+                els.chipsContainer.style.display = 'none';
+            } else {
+                // Show suggestions
+                els.chipsContainer.style.display = 'flex';
+                // Generate contextual chips if none are showing
+                if (els.chipsContainer.children.length === 0 && chatHistory.length > 0) {
+                    const contextualChips = generateContextualChips(chatHistory);
+                    if (contextualChips.length > 0) {
+                        contextualChips.forEach(chipText => {
+                            const btn = document.createElement('button');
+                            btn.className = 'chip-btn text-xs bg-white border border-[#212842]/20 text-[#212842] px-3 py-1 rounded-full hover:bg-[#212842] hover:text-white transition-colors';
+                            btn.textContent = chipText;
+                            btn.addEventListener('click', () => {
+                                if (els.input) {
+                                    els.input.value = chipText;
+                                    handleSend();
+                                }
+                            });
+                            els.chipsContainer.appendChild(btn);
+                        });
+
+                        // Add close button
+                        const closeBtn = document.createElement('button');
+                        closeBtn.className = 'chip-close-btn text-xs text-[#362017]/60 hover:text-[#362017] px-2 py-1 ml-2 transition-colors';
+                        closeBtn.innerHTML = '×';
+                        closeBtn.title = 'Toggle suggestions';
+                        closeBtn.addEventListener('click', () => {
+                            const isVisible = els.chipsContainer.style.display === 'flex';
+                            els.chipsContainer.style.display = isVisible ? 'none' : 'flex';
+                        });
+                        els.chipsContainer.appendChild(closeBtn);
+                    }
+                }
+            }
+        }
+    });
 
     // 3.1 Static Chip Buttons (pre-existing in HTML)
     if (els.chipsContainer) {
@@ -1442,10 +1707,49 @@ document.addEventListener('DOMContentLoaded', () => {
         micBtn.style.display = 'none';
     }
 
+    // Generate contextual chip suggestions based on conversation
+    function generateContextualChips(history) {
+        const suggestions = [];
+        const lastUserMessage = [...history].reverse().find(msg => msg.sender === 'user')?.text?.toLowerCase() || '';
+        const lastBotMessage = [...history].reverse().find(msg => msg.sender === 'bot')?.text?.toLowerCase() || '';
+        
+        // Analyze conversation context and suggest relevant follow-ups
+        if (lastUserMessage.includes('skill') || lastUserMessage.includes('technology') || lastUserMessage.includes('expertise')) {
+            suggestions.push("What projects have you worked on?", "Tell me about your experience", "What are you learning currently?");
+        } else if (lastUserMessage.includes('background') || lastUserMessage.includes('experience') || lastUserMessage.includes('career')) {
+            suggestions.push("What are your main skills?", "Tell me about your education", "What industries have you worked in?");
+        } else if (lastUserMessage.includes('project') || lastUserMessage.includes('work') || lastUserMessage.includes('portfolio')) {
+            suggestions.push("Can you show me your code?", "What technologies did you use?", "How long did it take to build?");
+        } else if (lastUserMessage.includes('contact') || lastUserMessage.includes('reach') || lastUserMessage.includes('email')) {
+            suggestions.push("Are you available for freelance work?", "What's your typical response time?", "Do you work remotely?");
+        } else if (lastUserMessage.includes('education') || lastUserMessage.includes('study') || lastUserMessage.includes('learn')) {
+            suggestions.push("What certifications do you have?", "What's your favorite programming language?", "How do you stay updated with technology?");
+        } else if (lastBotMessage.includes('project') || lastBotMessage.includes('work')) {
+            suggestions.push("Can you tell me more about that project?", "What challenges did you face?", "What did you learn from it?");
+        } else if (lastBotMessage.includes('skill') || lastBotMessage.includes('technology')) {
+            suggestions.push("How did you learn that?", "Have you used it in projects?", "What's your proficiency level?");
+        } else if (history.length < 4) {
+            // Early conversation - general suggestions
+            suggestions.push("What are your main skills?", "Tell me about your background", "What projects are you proud of?");
+        }
+        
+        // Limit to 3 suggestions and ensure variety
+        return suggestions.slice(0, 3);
+    }
+
     // 4. Functions
     function toggleChat() {
+        const wasHidden = els.window?.classList.contains('hidden');
         els.window?.classList.toggle('hidden');
         if (!els.window?.classList.contains('hidden')) {
+            // Chat window is now visible
+            if (wasHidden) {
+                // Reset positioning to normal flow
+                els.window.style.position = '';
+                els.window.style.left = '';
+                els.window.style.top = '';
+                els.window.style.zIndex = '';
+            }
             if(els.bubble) els.bubble.style.display = 'none';
             setTimeout(() => {
                 els.input?.focus();
@@ -1459,7 +1763,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function handleSend() {
         const text = els.input.value.trim();
-        if (!text) return;
+        if (!text || isSending) return;
+
+        isSending = true;
 
         // Google Analytics event tracking
         if(typeof gtag === 'function') {
@@ -1509,6 +1815,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     els.chipsContainer.appendChild(btn);
                 });
+                
+                // Add close button
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'chip-close-btn text-xs text-[#362017]/60 hover:text-[#362017] px-2 py-1 ml-2 transition-colors';
+                closeBtn.innerHTML = '×';
+                closeBtn.title = 'Hide suggestions';
+                closeBtn.addEventListener('click', () => {
+                    els.chipsContainer.style.display = 'none';
+                });
+                els.chipsContainer.appendChild(closeBtn);
             }
 
             // Handle actions
@@ -1531,9 +1847,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 addCardToUI(data.card);
             }
 
+            // Generate contextual chips based on conversation
+            if (!data.chips && chatHistory.length > 0) {
+                const contextualChips = generateContextualChips(chatHistory);
+                if (contextualChips.length > 0 && els.chipsContainer) {
+                    els.chipsContainer.innerHTML = '';
+                    contextualChips.forEach(chipText => {
+                        const btn = document.createElement('button');
+                        btn.className = 'chip-btn text-xs bg-white border border-[#212842]/20 text-[#212842] px-3 py-1 rounded-full hover:bg-[#212842] hover:text-white transition-colors';
+                        btn.textContent = chipText;
+                        btn.addEventListener('click', () => {
+                            if (els.input) {
+                                els.input.value = chipText;
+                                handleSend();
+                            }
+                        });
+                        els.chipsContainer.appendChild(btn);
+                    });
+                    
+                    // Add close button
+                    const closeBtn = document.createElement('button');
+                    closeBtn.className = 'chip-close-btn text-xs text-[#362017]/60 hover:text-[#362017] px-2 py-1 ml-2 transition-colors';
+                    closeBtn.innerHTML = '×';
+                    closeBtn.title = 'Hide suggestions';
+                    closeBtn.addEventListener('click', () => {
+                        els.chipsContainer.style.display = 'none';
+                    });
+                    els.chipsContainer.appendChild(closeBtn);
+                }
+            }
+
         } catch (e) {
             removeMessage(loadingId);
             addMessageToUI("Offline mode. Please try again.", 'bot');
+        } finally {
+            isSending = false;
         }
     }
 
@@ -1607,59 +1955,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 5. Draggable Header Logic with Viewport Constraints
-    console.log('Draggable setup - header:', els.header, 'window:', els.window);
     if (els.header && els.window) {
-        console.log('Setting up draggable functionality');
-        let isDragging = false, startX, startY, initialLeft, initialBottom;
-        
-        // Restore saved position
-        const savedLeft = localStorage.getItem('chatWindowLeft');
-        const savedBottom = localStorage.getItem('chatWindowBottom');
-        if (savedLeft && savedBottom) {
-            els.window.style.left = savedLeft;
-            els.window.style.bottom = savedBottom;
-            els.window.style.right = 'auto';
-        }
-        
+        let isDragging = false, startX, startY, initialLeft, initialTop;
+
         // Set initial cursor
         els.header.style.cursor = 'move';
-        console.log('Header cursor set to move');
-        
+
         els.header.addEventListener('mousedown', (e) => {
-            console.log('Mousedown on header', e.target);
             if (e.target.closest('#close-chat')) return; // Don't drag when clicking close
-            console.log('Starting drag');
             isDragging = true;
             startX = e.clientX;
             startY = e.clientY;
             const rect = els.window.getBoundingClientRect();
             initialLeft = rect.left;
-            initialBottom = window.innerHeight - rect.bottom;
+            initialTop = rect.top;
             els.header.style.cursor = 'grabbing';
             document.body.style.userSelect = 'none';
+
+            // Make window absolutely positioned for dragging
+            if (els.window.style.position !== 'fixed') {
+                els.window.style.position = 'fixed';
+                els.window.style.left = `${initialLeft}px`;
+                els.window.style.top = `${initialTop}px`;
+                els.window.style.zIndex = '10000';
+            }
         });
 
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
             e.preventDefault();
-            
+
             const dx = e.clientX - startX;
-            const dy = startY - e.clientY; // Inverted for bottom positioning
-            
+            const dy = e.clientY - startY;
+
             let newLeft = initialLeft + dx;
-            let newBottom = initialBottom + dy;
-            
+            let newTop = initialTop + dy;
+
             // Viewport constraints (with padding)
             const windowWidth = els.window.offsetWidth;
             const windowHeight = els.window.offsetHeight;
             const padding = 10;
-            
+
             newLeft = Math.max(padding, Math.min(newLeft, window.innerWidth - windowWidth - padding));
-            newBottom = Math.max(padding, Math.min(newBottom, window.innerHeight - windowHeight - padding));
-            
+            newTop = Math.max(padding, Math.min(newTop, window.innerHeight - windowHeight - padding));
+
             els.window.style.left = `${newLeft}px`;
-            els.window.style.bottom = `${newBottom}px`;
-            els.window.style.right = 'auto';
+            els.window.style.top = `${newTop}px`;
         });
 
         document.addEventListener('mouseup', () => {
@@ -1667,14 +2008,8 @@ document.addEventListener('DOMContentLoaded', () => {
             isDragging = false;
             els.header.style.cursor = 'move';
             document.body.style.userSelect = '';
-            
-            // Save position
-            localStorage.setItem('chatWindowLeft', els.window.style.left);
-            localStorage.setItem('chatWindowBottom', els.window.style.bottom);
         });
-    }
-
-    // 6. Keyboard Shortcuts
+    }    // 6. Keyboard Shortcuts
     document.addEventListener('keydown', (e) => {
         // Escape to close chat
         if (e.key === 'Escape' && !els.window?.classList.contains('hidden')) {

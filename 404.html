@@ -134,10 +134,10 @@
                 
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
-                    <a href="/index.html" class="inline-block text-base font-medium text-indigodeep bg-transparent border-2 border-indigodeep px-8 py-4 rounded-full hover:scale-110 dark:text-beige dark:border-beige transition-all focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-4 focus:ring-offset-beige dark:focus:ring-beige">
+                    <a href="/index.html" class="inline-block text-base font-medium text-indigodeep bg-transparent border-2 border-indigodeep px-8 py-4 rounded-full hover:scale-110 dark:text-beige dark:border-indigodeep transition-all focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-4 focus:ring-offset-transparent dark:focus:ring-beige">
                         Go Home
                     </a>
-                    <a href="/overview.html" class="inline-block text-base font-medium text-indigodeep bg-transparent border-2 border-indigodeep px-8 py-4 rounded-full hover:scale-110 dark:text-beige dark:border-beige transition-all focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-4 focus:ring-offset-beige dark:focus:ring-beige">
+                    <a href="/overview.html" class="inline-block text-base font-medium text-indigodeep bg-transparent border-2 border-indigodeep px-8 py-4 rounded-full hover:scale-110 dark:text-beige dark:border-indigodeep transition-all focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-4 focus:ring-offset-transparent dark:focus:ring-beige">
                         View Overview
                     </a>
                 </div>
@@ -224,12 +224,12 @@
                 <button class="chip-btn text-xs bg-white border border-[#212842]/20 text-[#212842] px-3 py-1 rounded-full hover:bg-[#212842] hover:text-white transition-colors">Contact info</button>
             </div>
 
-            <div class="p-3 bg-white border-t border-[#362017]/10 shrink-0 flex gap-2 items-center">
-                <button id="mic-btn" aria-label="Voice input" title="Voice input" class="shrink-0">
+            <div id="chat-widget" class="pl-2 pr-4 py-4 bg-white border-t border-[#362017]/10 shrink-0 flex gap-2 items-center">
+                <button id="mic-btn" aria-label="Voice input" title="Voice input" class="shrink-0 px-2 py-1 flex justify-center items-center">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
                 </button>
-                <input type="text" id="chat-input" placeholder="Ask a question..." class="flex-1 bg-[#e1d4c2]/30 border-none rounded-lg px-4 py-2 text-sm text-[#362017] focus:ring-2 focus:ring-[#212842]/20 outline-none">
-                <button id="send-btn" class="bg-[#212842] text-white px-3 rounded-lg hover:bg-[#362017] transition-colors shrink-0" aria-label="Send Message">
+                <input type="text" id="chat-input" placeholder="Ask a question..." class="flex-1 bg-[#e1d4c2]/30 border-none rounded-lg px-3 py-1 text-sm text-[#362017] focus:ring-2 focus:ring-[#212842]/20 outline-none">
+                <button id="send-btn" class="bg-[#212842] text-white px-2 py-1 rounded-lg hover:bg-[#362017] transition-colors shrink-0 flex justify-center items-center" aria-label="Send Message">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                 </button>
             </div>

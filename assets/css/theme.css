@@ -112,44 +112,6 @@ header {
 }
 
 /* ==========================================================================
-   Mobile Color Consistency (Force Brand Colors)
-   ========================================================================== */
-
-/* Force brand colors on mobile devices regardless of system dark mode */
-@media (max-width: 768px) {
-    /* Light theme enforcement on mobile */
-    body:not([data-theme="dark"]) {
-        background-color: #e1d4c2 !important;
-        color: #362017 !important;
-        -webkit-text-fill-color: #362017;
-    }
-    
-    body:not([data-theme="dark"]) .bg-beige {
-        background-color: #e1d4c2 !important;
-    }
-    
-    body:not([data-theme="dark"]) .text-chocolate {
-        color: #362017 !important;
-        -webkit-text-fill-color: #362017;
-    }
-    
-    body:not([data-theme="dark"]) .text-indigodeep {
-        color: #212842 !important;
-        -webkit-text-fill-color: #212842;
-    }
-    
-    body:not([data-theme="dark"]) .bg-indigodeep {
-        background-color: #212842 !important;
-    }
-    
-    /* Dark theme colors when explicitly set */
-    [data-theme="dark"] {
-        background-color: #0a0a0a !important;
-        color: #e1d4c2 !important;
-    }
-}
-
-/* ==========================================================================
    Mobile Typography & Layout
    ========================================================================== */
 
@@ -620,21 +582,21 @@ select {
 
 .theme-toggle {
     position: relative;
-    width: 60px;
-    height: 30px;
+    width: 92px;
+    height: 32px;
     background: var(--color-primary);
-    border-radius: 15px;
+    border-radius: 16px;
     cursor: pointer;
     transition: background 0.3s ease;
-    border: 2px solid var(--color-border);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .theme-toggle-slider {
     position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 20px;
-    height: 20px;
+    top: 2px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
     background: white;
     border-radius: 50%;
     transition: transform 0.3s ease;
@@ -644,7 +606,7 @@ select {
 }
 
 [data-theme="dark"] .theme-toggle-slider {
-    transform: translateX(30px);
+    transform: translateX(64px);
     background: #ffeb3b;
 }
 
@@ -671,6 +633,59 @@ select {
 [data-theme="dark"] .theme-icon-moon {
     display: block;
     color: #212842;
+}
+
+/* Responsive theme toggle */
+@media (max-width: 767px) {
+    .theme-toggle {
+        width: 70px;
+        height: 28px;
+        border-radius: 14px;
+    }
+    
+    .theme-toggle-slider {
+        width: 20px;
+        height: 20px;
+        top: 2px;
+        left: 2px;
+    }
+    
+    [data-theme="dark"] .theme-toggle-slider {
+        transform: translateX(46px);
+    }
+    
+    .theme-icon-sun,
+    .theme-icon-moon {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .theme-toggle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+    
+    .theme-toggle-slider {
+        width: 32px;
+        height: 32px;
+        top: 2px;
+        left: 2px;
+        border-radius: 50%;
+    }
+    
+    [data-theme="dark"] .theme-toggle-slider {
+        transform: translateX(0px);
+        background: #ffeb3b;
+    }
+    
+    .theme-icon-sun,
+    .theme-icon-moon {
+        width: 16px;
+        height: 16px;
+    }
 }
 
 /* ==========================================================================
@@ -993,6 +1008,38 @@ select.border-red-500 {
 .achievement-desc {
     font-size: 13px;
     opacity: 0.9;
+}
+
+.achievement-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0;
+    opacity: 0.7;
+}
+
+.achievement-close:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    opacity: 1;
+}
+
+/* Dark mode achievement text colors */
+[data-theme="dark"] .achievement-notification {
+    color: #362017;
+}
+
+[data-theme="dark"] .achievement-close {
+    color: #362017;
 }
 
 @media (max-width: 768px) {
@@ -1404,14 +1451,20 @@ select.border-red-500 {
         bottom: 1rem !important;
         right: 1rem !important;
     }
-    
+
     #chat-window {
         width: calc(100vw - 32px) !important;
         max-width: calc(100vw - 32px) !important;
-        right: 16px !important;
-        left: 16px !important;
         margin: 0 auto;
     }
+
+    /* Allow dragged chat window to be positioned anywhere */
+    #chat-window[style*="position: fixed"] {
+        width: 320px !important;
+        max-width: 320px !important;
+        margin: 0 !important;
+    }
+}
     
     #chat-toggle {
         width: 56px !important;
@@ -1700,6 +1753,168 @@ select.border-red-500 {
 
 [data-theme="dark"] footer a:hover {
     color: #ffffff;
+}
+
+/* ==========================================================================
+   Custom Chat Widget Dark Mode Styles
+   ========================================================================== */
+
+[data-theme="dark"] #chat-widget .p-4.bg-white {
+    background-color: #362017 !important;
+}
+
+[data-theme="dark"] #mic-btn {
+    background-color: #362017 !important;
+}
+
+[data-theme="dark"] #send-btn {
+    background-color: #362017 !important;
+}
+
+[data-theme="dark"] #chat-input {
+    background-color: #362017 !important;
+    color: #e1d4c2 !important;
+}
+
+/* Dark mode styles for suggestions button */
+[data-theme="dark"] #suggestions-btn {
+    background-color: #362017 !important;
+}
+
+/* Dark mode styles for chip close button */
+[data-theme="dark"] .chip-close-btn {
+    font-size: 1.25rem !important; /* text-lg */
+    color: #e1d4c2 !important;
+}
+
+/* Konami Code Gift Animations */
+.gift-emoji {
+    font-size: 4rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: bounce 2s infinite;
+}
+
+.gift-emoji:hover {
+    transform: scale(1.1);
+}
+
+.gift-emoji.gift-opened {
+    animation: gift-open 0.6s ease forwards;
+}
+
+@keyframes gift-open {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2) rotate(180deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+.compliment-container {
+    text-align: center;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.compliment-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #362017;
+    margin: 0;
+    animation: sparkle-text 2s ease-in-out infinite alternate;
+}
+
+[data-theme="dark"] .compliment-text {
+    color: #e1d4c2;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes sparkle-text {
+    from {
+        text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    }
+    to {
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6);
+    }
+}
+
+/* Confetti Animation */
+.confetti {
+    position: fixed;
+    top: -10px;
+    width: 10px;
+    height: 10px;
+    z-index: 10001;
+    animation: confetti-fall linear infinite;
+    pointer-events: none;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-10px) rotate(0deg);
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+    }
+}
+
+/* Sparkle effect */
+.sparkle::before {
+    content: '✨';
+    position: absolute;
+    left: -20px;
+    top: -20px;
+    font-size: 2rem;
+    animation: sparkle-float 3s ease-in-out infinite;
+}
+
+.sparkle::after {
+    content: '✨';
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    font-size: 1.5rem;
+    animation: sparkle-float 3s ease-in-out infinite 1s;
+}
+
+@keyframes sparkle-float {
+    0%, 100% {
+        transform: translateY(0px) scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: translateY(-10px) scale(1.2);
+        opacity: 1;
+    }
 }
 
 
