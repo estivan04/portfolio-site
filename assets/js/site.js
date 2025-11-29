@@ -1573,6 +1573,13 @@ document.addEventListener('DOMContentLoaded', () => {
         suggestionsBtn: document.getElementById('suggestions-btn')
     };
 
+    // Position widget based on language
+    const lang = document.documentElement.lang;
+    if (lang === 'ar' && els.widget) {
+        els.widget.classList.remove('right-4');
+        els.widget.classList.add('left-4');
+    }
+
     // State
     let chatHistory = [];
     let isSending = false; // Prevent duplicate sends
@@ -1865,7 +1872,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     const padding = 16;
 
                     // Calculate position to appear above and aligned with the widget
-                    let leftPos = widgetRect.left;
+                    let leftPos;
+                    if (isRTL) {
+                        // For RTL, position window to the right of the widget
+                        leftPos = widgetRect.right + padding;
+                    } else {
+                        // For LTR, align left with widget
+                        leftPos = widgetRect.left;
+                    }
                     let topPos = widgetRect.top - windowHeight - padding;
 
                     // Ensure it stays within viewport bounds
@@ -2040,7 +2054,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const userClass = 'bg-[#212842] text-white rounded-tr-none self-end ml-auto';
         const botClass = 'bg-white text-[#362017] rounded-tl-none border border-[#362017]/5 self-start';
         
-        div.className = `p-3 rounded-lg shadow-sm max-w-[85%] mb-3 text-sm leading-relaxed ${sender === 'user' ? userClass : botClass}`;
+        div.className = `p-3 rounded-lg shadow-sm max-w-[70%] mb-3 text-sm leading-relaxed ${sender === 'user' ? userClass : botClass}`;
         
         els.messages.appendChild(div);
         

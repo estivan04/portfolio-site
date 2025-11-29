@@ -202,7 +202,7 @@
         <section class="max-w-4xl mx-auto px-6 lg:px-12 py-20 lg:py-32">
             <div class="bg-indigodeep rounded-3xl p-12 lg:p-16 text-center space-y-6">
                 <h2 class="text-3xl lg:text-4xl font-bold text-beige">هل أنت مستعد للتحدث؟</h2>
-                <p class="text-base text-beige max-w-xl mx-auto leading-relaxed">سواء كان ذلك دورًا أو مشروعًا أو مجرد محادثة—لنتواصل.</p>
+                <p class="text-base text-beige max-w-lg mx-auto leading-relaxed">سواء كان ذلك دورًا أو مشروعًا أو مجرد محادثة—لنتواصل.</p>
                 <a href="../contact.html#main-content" class="inline-block text-base font-medium text-beige bg-transparent border-2 border-beige px-8 py-4 rounded-full hover:scale-110 transition-all focus:outline-none focus:ring-2 focus:ring-beige focus:ring-offset-4 focus:ring-offset-indigodeep">
                     ابقى على تواصل
                 </a>
@@ -258,7 +258,7 @@
     <!-- Lazy Loader for Analytics & Dependencies (moved to end of body) -->
     
     <!-- Savonie AI Chat Widget -->
-    <div id="chat-widget" class="fixed bottom-6 right-4 z-50 font-sans" style="z-index: 9999;">
+    <div id="chat-widget" class="fixed bottom-6 left-4 z-50 font-sans" style="z-index: 9999;">
         <!-- Chat Window (independently positioned when dragging) -->
         <div id="chat-window" class="hidden fixed w-80 h-[500px] bg-[#e1d4c2]/95 backdrop-blur-md rounded-2xl shadow-2xl border border-[#362017]/10 overflow-hidden flex flex-col" style="max-width: calc(100vw - 48px); max-height: calc(100vh - 120px);">
             <div id="chat-header" class="bg-[#212842] p-4 flex justify-between items-center shrink-0 cursor-move select-none">
@@ -292,8 +292,8 @@
         </div>
 
         <!-- Welcome Bubble (anchored above toggle button) -->
-        <div id="welcome-bubble" class="fixed bg-white px-4 py-2 rounded-xl rounded-br-none shadow-lg border border-[#362017]/5 transform transition-all duration-500 opacity-0 translate-y-4 pointer-events-none" style="bottom: 90px; left: 32px;">
-            <p class="text-sm font-medium text-[#362017]">مرحباً، هل يمكنني مساعدتك؟ 👋</p>
+        <div id="welcome-bubble" class="fixed bg-white px-4 py-2 rounded-xl rounded-br-none shadow-lg border border-[#362017]/5 transform transition-all duration-500 opacity-0 translate-y-4 pointer-events-none" style="bottom: 90px; right: 32px;">
+            <p class="text-sm font-medium text-[#362017] max-w-xs">مرحباً، هل يمكنني مساعدتك؟ 👋</p>
         </div>
 
         <button id="chat-toggle" class="bg-[#212842] w-16 h-16 rounded-full shadow-xl flex items-center justify-center hover:scale-105 hover:rotate-3 transition-all duration-300 group border-2 border-white/10 relative overflow-hidden" aria-label="Open Chat">
