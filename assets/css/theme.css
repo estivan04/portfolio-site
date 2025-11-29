@@ -112,8 +112,74 @@ header {
 }
 
 /* ==========================================================================
-   Mobile Typography & Layout
+   Responsive Typography & Layout (Hybrid Approach - Mobile First)
    ========================================================================== */
+
+/* Fluid typography - constrained to mobile/tablet only */
+:root {
+    /* Constrained fluid scaling - stops at desktop */
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.875rem;
+    --font-size-4xl: 2.25rem;
+    --font-size-5xl: 3rem;
+    --font-size-6xl: 3.75rem;
+    --font-size-7xl: 4.5rem;
+    
+    /* Container padding - only fluid on mobile */
+    --container-padding: 1.5rem;
+}
+
+/* Mobile-only fluid typography (below 1024px) */
+@media (max-width: 1023px) {
+    :root {
+        --font-size-base: clamp(0.875rem, 0.8rem + 0.5vw, 1rem);
+        --font-size-lg: clamp(1rem, 0.9rem + 0.625vw, 1.125rem);
+        --font-size-xl: clamp(1.125rem, 1rem + 0.75vw, 1.25rem);
+        --font-size-2xl: clamp(1.25rem, 1.1rem + 1vw, 1.5rem);
+        --font-size-3xl: clamp(1.5rem, 1.2rem + 1.5vw, 1.875rem);
+        --font-size-4xl: clamp(1.75rem, 1.4rem + 2vw, 2.25rem);
+        --font-size-5xl: clamp(2rem, 1.5rem + 3vw, 3rem);
+        --font-size-6xl: clamp(2.5rem, 2rem + 3.5vw, 3.75rem);
+        --font-size-7xl: clamp(3rem, 2.5rem + 4vw, 4.5rem);
+        
+        --container-padding: clamp(1rem, 3vw, 1.5rem);
+    }
+}
+
+/* Desktop: Lock to original sizes (1024px and above) */
+@media (min-width: 1024px) {
+    .text-xs { font-size: 0.75rem !important; line-height: 1rem !important; }
+    .text-sm { font-size: 0.875rem !important; line-height: 1.25rem !important; }
+    .text-base { font-size: 1rem !important; line-height: 1.5rem !important; }
+    .text-lg { font-size: 1.125rem !important; line-height: 1.75rem !important; }
+    .text-xl { font-size: 1.25rem !important; line-height: 1.75rem !important; }
+    .text-2xl { font-size: 1.5rem !important; line-height: 2rem !important; }
+    .text-3xl { font-size: 1.875rem !important; line-height: 2.25rem !important; }
+    .text-4xl { font-size: 2.25rem !important; line-height: 2.5rem !important; }
+    .text-5xl { font-size: 3rem !important; line-height: 1 !important; }
+    .lg\:text-6xl { font-size: 3.75rem !important; line-height: 1 !important; }
+    .lg\:text-7xl { font-size: 4.5rem !important; line-height: 1 !important; }
+}
+
+/* Mobile-only fluid typography */
+@media (max-width: 1023px) {
+    .text-xs { font-size: var(--font-size-xs) !important; }
+    .text-sm { font-size: var(--font-size-sm) !important; }
+    .text-base { font-size: var(--font-size-base) !important; }
+    .text-lg { font-size: var(--font-size-lg) !important; }
+    .text-xl { font-size: var(--font-size-xl) !important; }
+    .text-2xl { font-size: var(--font-size-2xl) !important; }
+    .text-3xl { font-size: var(--font-size-3xl) !important; }
+    .text-4xl { font-size: var(--font-size-4xl) !important; }
+    .text-5xl { font-size: var(--font-size-5xl) !important; }
+    .text-6xl { font-size: var(--font-size-6xl) !important; }
+    .text-7xl { font-size: var(--font-size-7xl) !important; }
+}
 
 /* Smooth mobile menu animations */
 #mobile-menu {
@@ -135,22 +201,56 @@ header {
     transition: transform 0.3s ease;
 }
 
-/* Comfortable padding on mobile */
-@media (max-width: 640px) {
+/* Mobile-only: Fluid container padding */
+@media (max-width: 1023px) {
     .container,
     section > div {
-        padding-left: 1.5rem !important;
-        padding-right: 1.5rem !important;
+        padding-left: var(--container-padding) !important;
+        padding-right: var(--container-padding) !important;
     }
     
-    /* Ensure headings don't touch edges */
+    /* Ensure headings have breathing room on mobile */
     h1, h2, h3, h4, h5, h6 {
         padding-left: 0.5rem;
         padding-right: 0.5rem;
     }
 }
 
-/* Fix CTA button visibility in dark mode */
+/* Desktop: Original fixed padding */
+@media (min-width: 1024px) {
+    .px-6 { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+    .lg\:px-12 { padding-left: 3rem !important; padding-right: 3rem !important; }
+    .py-20 { padding-top: 5rem !important; padding-bottom: 5rem !important; }
+    .lg\:py-32 { padding-top: 8rem !important; padding-bottom: 8rem !important; }
+    .py-12 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+}
+
+/* Desktop: Restore original max-widths */
+@media (min-width: 1024px) {
+    .max-w-7xl { max-width: 80rem !important; }
+    .max-w-6xl { max-width: 72rem !important; }
+    .max-w-5xl { max-width: 64rem !important; }
+    .max-w-4xl { max-width: 56rem !important; }
+    .max-w-3xl { max-width: 48rem !important; }
+    .max-w-2xl { max-width: 42rem !important; }
+    .max-w-xl { max-width: 36rem !important; }
+}
+
+/* Mobile: Constrained max-widths */
+@media (max-width: 1023px) {
+    .max-w-7xl { max-width: 95vw !important; }
+    .max-w-6xl { max-width: 92vw !important; }
+    .max-w-5xl { max-width: 90vw !important; }
+    .max-w-4xl { max-width: 88vw !important; }
+    .max-w-3xl { max-width: 85vw !important; }
+    .max-w-2xl { max-width: 82vw !important; }
+    .max-w-xl { max-width: 80vw !important; }
+}
+
+/* ==========================================================================
+   Fix CTA button visibility in dark mode
+   ========================================================================== */
+
 [data-theme="dark"] .bg-indigodeep a.bg-white {
     background-color: #e1d4c2 !important;
     color: #212842 !important;
@@ -1449,7 +1549,16 @@ select.border-red-500 {
 @media (max-width: 640px) {
     #chat-widget {
         bottom: 1rem !important;
+    }
+
+    :lang(ar) #chat-widget {
+        left: 1rem !important;
+        right: auto !important;
+    }
+
+    :not(:lang(ar)) #chat-widget {
         right: 1rem !important;
+        left: auto !important;
     }
 
     #chat-window {
@@ -1472,10 +1581,19 @@ select.border-red-500 {
     }
     
     #welcome-bubble {
-        right: 20px !important;
         bottom: 80px !important;
         max-width: calc(100vw - 100px);
         font-size: 0.875rem;
+    }
+
+    :lang(ar) #welcome-bubble {
+        left: 20px !important;
+        right: auto !important;
+    }
+
+    :not(:lang(ar)) #welcome-bubble {
+        right: 20px !important;
+        left: auto !important;
     }
     
     /* Prevent chat from blocking content on mobile */

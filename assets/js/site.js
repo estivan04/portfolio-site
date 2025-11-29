@@ -40,7 +40,6 @@ const initDarkMode = () => {
 
     // Add event listeners for both click and touch
     toggleButton.addEventListener('click', toggleTheme);
-    toggleButton.addEventListener('touchstart', toggleTheme);
 };
 
 // ==========================================================================
@@ -1578,9 +1577,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (lang === 'ar' && els.widget) {
         els.widget.style.left = '1rem';
         els.widget.style.right = 'auto';
+        if (els.bubble) {
+            els.bubble.style.left = '1rem';
+            els.bubble.style.right = 'auto';
+        }
     } else if (els.widget) {
         els.widget.style.right = '1rem';
         els.widget.style.left = 'auto';
+        if (els.bubble) {
+            els.bubble.style.right = '1rem';
+            els.bubble.style.left = 'auto';
+        }
     }
 
     // State
@@ -1870,30 +1877,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Position the chat window relative to the chat widget button
                 const widgetRect = els.widget?.getBoundingClientRect();
                 if (widgetRect) {
-                    const windowWidth = 320; // w-80 = 320px
-                    const windowHeight = 500; // h-[500px] = 500px
-                    const padding = 16;
+                    const windowWidth = 20; // 20rem = 320px
+                    const windowHeight = 31.25; // 31.25rem = 500px
+                    const padding = 1; // 1rem
 
                     // Calculate position to appear above and aligned with the widget
-                    let leftPos = widgetRect.left;
-                    let topPos = widgetRect.top - windowHeight - padding;
+                    let leftPos = widgetRect.left / 16;
+                    let topPos = widgetRect.top / 16 - windowHeight - padding;
 
                     // Ensure it stays within viewport bounds
-                    if (leftPos + windowWidth > window.innerWidth) {
-                        leftPos = window.innerWidth - windowWidth - padding;
+                    if (leftPos + windowWidth > window.innerWidth / 16) {
+                        leftPos = window.innerWidth / 16 - windowWidth - padding;
                     }
                     if (leftPos < padding) {
                         leftPos = padding;
                     }
                     if (topPos < padding) {
-                        // If not enough space above, position below the widget
-                        topPos = widgetRect.bottom + padding;
+                        topPos = padding; // Keep it at top if not enough space above
                     }
 
                     // Apply positioning
                     els.window.style.position = 'fixed';
-                    els.window.style.left = `${leftPos}px`;
-                    els.window.style.top = `${topPos}px`;
+                    els.window.style.left = `${leftPos}rem`;
+                    els.window.style.top = `${topPos}rem`;
                     els.window.style.right = 'auto';
                     els.window.style.zIndex = '10000';
                 } else {
