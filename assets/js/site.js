@@ -1576,8 +1576,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Position widget based on language
     const lang = document.documentElement.lang;
     if (lang === 'ar' && els.widget) {
-        els.widget.classList.remove('right-4');
-        els.widget.classList.add('left-4');
+        els.widget.style.left = '1rem';
+        els.widget.style.right = 'auto';
+    } else if (els.widget) {
+        els.widget.style.right = '1rem';
+        els.widget.style.left = 'auto';
     }
 
     // State
@@ -1872,14 +1875,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const padding = 16;
 
                     // Calculate position to appear above and aligned with the widget
-                    let leftPos;
-                    if (isRTL) {
-                        // For RTL, position window to the right of the widget
-                        leftPos = widgetRect.right + padding;
-                    } else {
-                        // For LTR, align left with widget
-                        leftPos = widgetRect.left;
-                    }
+                    let leftPos = widgetRect.left;
                     let topPos = widgetRect.top - windowHeight - padding;
 
                     // Ensure it stays within viewport bounds
