@@ -2089,4 +2089,9 @@ select.border-red-500 {
     }
 }
 
+/* Performance: Skip rendering off-screen content */
+footer, .section-below-fold {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 1000px;
+}
 

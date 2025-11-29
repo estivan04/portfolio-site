@@ -1,0 +1,7 @@
+/* TEAM */
+Founder: Estivan Ayramia
+Site: estivanayramia.com
+Location: El Cajon, CA
+
+/* TECH */
+Built with: Tailwind CSS, HTML5, Vanilla JS

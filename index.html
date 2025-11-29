@@ -48,6 +48,18 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#212842">
     
+    <!-- Schema.org Person Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Estivan Ayramia",
+      "url": "https://estivanayramia.com",
+      "jobTitle": "Marketing & Strategy Consultant",
+      "knowsAbout": ["Marketing", "Strategy", "Web Design"]
+    }
+    </script>
+    
     <!-- Cache Control for Mobile -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -98,7 +110,7 @@
         <nav class="max-w-7xl mx-auto px-6 lg:px-12 py-6 flex items-center justify-between">
             <a href="/index.html" class="text-xl font-semibold text-indigodeep hover:text-chocolate transition-colors focus:outline-none focus:ring-2 focus:ring-indigodeep focus:ring-offset-2 focus:ring-offset-beige rounded inline-flex items-center" aria-label="Go to Portfolio home page">
                 <img src="/assets/img/logo-ea.webp" alt="EA" class="h-8 w-8 mr-2 object-contain" width="300" height="264" fetchpriority="high">
-                <span>Estivan Ayramia</span>
+                <span translate="no" class="notranslate">Estivan Ayramia</span>
             </a>
             
             <!-- Main Navigation -->
@@ -376,8 +388,8 @@
                 <!-- Column 1: Brand -->
                 <div class="space-y-4">
                     <a href="/index.html" class="flex items-center space-x-3 mb-4 hover:opacity-80 transition-opacity">
-                        <img src="/assets/img/logo-ea.webp" alt="EA" class="h-12 w-12 object-contain" width="300" height="264">
-                        <h3 class="text-xl font-semibold text-white">Estivan Ayramia</h3>
+                        <img src="/assets/img/logo-ea.webp" alt="EA" class="h-12 w-12 object-contain" width="300" height="264" loading="lazy" decoding="async">
+                        <h3 class="text-xl font-semibold text-white" translate="no">Estivan Ayramia</h3>
                     </a>
                     <p class="text-sm text-beige/80 leading-relaxed">Systems, people, clean execution. Making complex operations run smoothly.</p>
                 </div>
@@ -427,7 +439,7 @@
         <div id="chat-window" class="hidden fixed w-80 h-[500px] bg-[#e1d4c2]/95 backdrop-blur-md rounded-2xl shadow-2xl border border-[#362017]/10 overflow-hidden flex flex-col" style="max-width: calc(100vw - 48px); max-height: calc(100vh - 120px);">
             <div id="chat-header" class="bg-[#212842] p-4 flex justify-between items-center shrink-0 cursor-move select-none">
                 <h3 class="text-white font-medium text-sm flex items-center gap-2 pointer-events-none">
-                    <img src="/assets/img/savonie-thumb.webp" alt="Savonie" class="w-6 h-6 rounded-full border border-white/20 object-cover" width="64" height="64">
+                    <img src="/assets/img/savonie-thumb.webp" alt="Savonie" class="w-6 h-6 rounded-full border border-white/20 object-cover" width="64" height="64" loading="lazy" decoding="async">
                     Savonie AI
                 </h3>
                 <button id="close-chat" class="text-white/80 hover:text-white text-xl leading-none cursor-pointer">&times;</button>
@@ -459,7 +471,7 @@
 
         <!-- Toggle Button (always stays in bottom-right corner) -->
         <button id="chat-toggle" class="absolute bottom-0 right-0 bg-[#212842] w-16 h-16 rounded-full shadow-xl flex items-center justify-center hover:scale-105 hover:rotate-3 transition-all duration-300 group border-2 border-white/10 overflow-hidden" aria-label="Open Chat">
-            <img src="/assets/img/savonie-thumb.webp" alt="Chat" class="w-full h-full object-cover" width="64" height="64">
+            <img src="/assets/img/savonie-thumb.webp" alt="Chat" class="w-full h-full object-cover" width="64" height="64" loading="lazy" decoding="async">
         </button>
     </div>
     

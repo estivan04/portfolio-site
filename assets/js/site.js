@@ -1571,6 +1571,9 @@ const initPhase2 = () => {
 // ==========================================================================
 
 const init = () => {
+    // Developer signature
+    console.log('%c Designed by Estivan Ayramia ', 'background: #212842; color: #e1d4c2; padding: 4px; border-radius: 4px;');
+    
     // Wait for DOM to be ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
