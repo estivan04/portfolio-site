@@ -15,6 +15,32 @@
  */
 
 /* ==========================================================================
+   Branding: Selection & Caret
+   ========================================================================== */
+
+::selection {
+    background-color: #212842;
+    color: #ffffff;
+}
+
+::-moz-selection {
+    background-color: #212842;
+    color: #ffffff;
+}
+
+input,
+textarea,
+[contenteditable] {
+    caret-color: #212842;
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] [contenteditable] {
+    caret-color: #e1d4c2;
+}
+
+/* ==========================================================================
    CSS Variables for Theme
    ========================================================================== */
 
@@ -59,6 +85,24 @@
 body {
     background-color: var(--color-bg) !important;
     color: var(--color-text) !important;
+    overscroll-behavior-y: none; /* Prevent rubber-banding on mobile */
+}
+
+/* Typography: Balanced headings */
+h1, h2, h3 {
+    text-wrap: balance;
+}
+
+/* Blockquotes: Hanging punctuation */
+blockquote {
+    hanging-punctuation: first;
+}
+
+/* Image safety: prevent distortion */
+img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 header {
@@ -377,14 +421,24 @@ body {
 
 @media print {
     header,
+    nav,
     footer,
-    .no-print {
+    .no-print,
+    #chat-widget,
+    #chat-window,
+    #welcome-bubble,
+    button {
         display: none !important;
     }
     
     body {
-        background: white;
-        color: black;
+        background: white !important;
+        color: black !important;
+    }
+    
+    a {
+        color: black !important;
+        text-decoration: underline !important;
     }
 }
 

@@ -11,9 +11,19 @@ const initDarkMode = () => {
     const toggleButton = document.getElementById('theme-toggle');
     if (!toggleButton) return;
 
-    // Check for saved theme preference or default to light mode
-    const currentTheme = localStorage.getItem('theme') || 'light';
+    // Check for system dark mode preference
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // Check for saved theme preference or use system preference, fallback to light mode
+    const savedTheme = localStorage.getItem('theme');
+    const currentTheme = savedTheme || (prefersDarkMode ? 'dark' : 'light');
+    
     document.documentElement.setAttribute('data-theme', currentTheme);
+    
+    // Save the theme if it was auto-detected from system
+    if (!savedTheme) {
+        localStorage.setItem('theme', currentTheme);
+    }
 
     // Set initial icon
     toggleButton.innerHTML = currentTheme === 'dark' ? '<span style="color: #e1d4c2">🔆</span>' : '<span style="color: #212842">🌙</span>';
@@ -38,8 +48,23 @@ const initDarkMode = () => {
         toggleButton.setAttribute('aria-label', `Switch to ${theme} mode`);
     };
 
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        // Only auto-switch if user hasn't manually set a preference
+        if (!localStorage.getItem('theme_manual')) {
+            const newTheme = e.matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            toggleButton.innerHTML = newTheme === 'dark' ? '<span style="color: #e1d4c2">🔆</span>' : '<span style="color: #212842">🌙</span>';
+        }
+    });
+
     // Add event listeners for both click and touch
-    toggleButton.addEventListener('click', toggleTheme);
+    toggleButton.addEventListener('click', () => {
+        toggleTheme();
+        // Mark that user has manually set theme preference
+        localStorage.setItem('theme_manual', 'true');
+    });
 };
 
 // ==========================================================================
